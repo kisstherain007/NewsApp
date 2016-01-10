@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NewsApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="home_title_arry">
+        <item>新闻</item>
+    </string-array>
+</resources>

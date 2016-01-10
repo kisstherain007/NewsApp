@@ -1,0 +1,19 @@
+<resources>
+
+    <style name="drawer_menu_text_value_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">@dimen/textsize_middle</item>
+        <item name="android:layout_marginLeft">@dimen/common_margin_right_middle</item>
+    </style>
+
+    <style name="drawer_menu_header_text_value_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">@dimen/textsize_xmiddle</item>
+        <item name="android:layout_marginLeft">@dimen/common_margin_right_middle</item>
+    </style>
+
+</resources>

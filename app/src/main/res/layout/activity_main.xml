@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <include
+        android:id="@+id/comm_toolbar"
+        layout="@layout/comm_lay_toolbar" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerlayou"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/comm_toolbar">
+
+        <!--Main Content-->
+
+        <LinearLayout
+            android:id="@+id/fragment_container_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!--DrawerLayout Content-->
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:choiceMode="singleChoice" >
+
+            <fragment
+                android:name="com.ktr.newsapp.ui.home.menu.DrawerLeftMenuFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</RelativeLayout>
