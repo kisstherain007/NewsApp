@@ -1,55 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:layout_margin="10dp">
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/content_img"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_weight="2"/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/common_margin_right_smiddle">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@+id/item_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:gravity="left"
-        android:layout_marginLeft="@dimen/common_margin_right_small"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        android:divider="@drawable/news_item_h_divider">
 
-        <TextView
-            android:id="@+id/title_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_xmiddle"
-            android:textColor="@color/black"
-            android:maxLines="2"
-            android:text="Large Text" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/content_img"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="2" />
 
-        <TextView
-            android:id="@+id/content_textView"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_middle"
-            android:textColor="@color/gray_light"
-            android:maxLines="2"
-            android:text="Large Text"
-            android:layout_marginTop="5dp"/>
+            android:layout_weight="5"
+            android:showDividers="middle"
+            android:divider="@drawable/news_item_h_large_divider"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/date_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_small"
-            android:textColor="@color/gray_light"
-            android:text="Large Text"
-            android:gravity="right"
-            android:layout_marginTop="3dp"/>
+            <TextView
+                android:id="@+id/title_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="Large Text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textsize_xmiddle" />
+
+            <TextView
+                android:id="@+id/content_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="Large Text"
+                android:textColor="@color/gray_light"
+                android:textSize="@dimen/textsize_middle" />
+
+            <TextView
+                android:id="@+id/date_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="Large Text"
+                android:textColor="@color/gray_light"
+                android:textSize="@dimen/textsize_small" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-
 </LinearLayout>

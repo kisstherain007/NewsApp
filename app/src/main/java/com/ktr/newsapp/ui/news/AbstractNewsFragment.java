@@ -21,6 +21,7 @@ import com.ktr.newsapp.bean.newsBean.ContentlistBean;
 import com.ktr.newsapp.bean.newsBean.NewsDetailBean;
 import com.ktr.newsapp.bean.newsBean.NewsDetialPagebean;
 import com.ktr.newsapp.ui.abstractui.AbstractFragment;
+import com.ktr.newsapp.ui.newsDetail.NewsDetailActivity;
 import com.ktr.newsapp.weight.DividerItemDecoration;
 import com.ktr.newsapp.weight.KRecyclerAdapter;
 import com.ktr.newsapp.weight.KRecyclerView;
@@ -59,6 +60,14 @@ public abstract class AbstractNewsFragment extends AbstractFragment {
 
             executeSearchByChannelId(loadChannelId());
         }
+
+        kRecyclerAdapter.setmOnItemClickListener(new KRecyclerAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, Object t) {
+
+                NewsDetailActivity.startActivity(getActivity(), ((ContentlistBean) t).getLink());
+            }
+        });
     }
 
     public void executeSearchByChannelId(String channelId) {

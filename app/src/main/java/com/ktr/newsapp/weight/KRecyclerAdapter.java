@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Created by kisstherain on 2015/10/11.
  */
-public class KRecyclerAdapter extends RecyclerView.Adapter {
+public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnClickListener{
 
     public static final int titleType = 0;
 
@@ -72,6 +73,7 @@ public class KRecyclerAdapter extends RecyclerView.Adapter {
             default:
                 itemView = mLayoutInflater.inflate(R.layout.news_item_layout, viewGroup, false);
                 viewHolder = new KViewHolder(itemView);
+                viewHolder.itemView.setOnClickListener(this);
                 break;
         }
 
@@ -90,20 +92,36 @@ public class KRecyclerAdapter extends RecyclerView.Adapter {
             default:
                 ContentlistBean contentlistBean = contentlist.get(i);
                 KViewHolder kViewHolder = (KViewHolder) holder;
+                kViewHolder.itemView.setTag(contentlistBean);
                 kViewHolder.titleTextView.setText(contentlistBean.getTitle());
                 kViewHolder.contextTextView.setText(contentlistBean.getDesc());
                 kViewHolder.date_textView.setText(contentlistBean.getPubDate());
                 if (!contentlistBean.getImageurls().isEmpty()){
+
+                    kViewHolder.contentImage.setVisibility(View.VISIBLE);
+
                     Log.i("imageUrl", contentlistBean.getImageurls().get(0).getUrl());
                     Uri uri = Uri.parse(contentlistBean.getImageurls().get(0).getUrl());
                     DraweeController draweeController1 = Fresco.newDraweeControllerBuilder().setUri(uri).setAutoPlayAnimations(true).build();
                     kViewHolder.contentImage.setController(draweeController1);
+                }else{
+
+                    kViewHolder.contentImage.setVisibility(View.GONE);
                 }
                 break;
         }
     }
 
-    class KViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public void onClick(View v) {
+
+        if (mOnItemClickListener != null) {
+            //注意这里使用getTag方法获取数据
+            mOnItemClickListener.onItemClick(v,v.getTag());
+        }
+    }
+
+     class KViewHolder extends RecyclerView.ViewHolder{
 
         TextView titleTextView;
         TextView contextTextView;
@@ -141,5 +159,16 @@ public class KRecyclerAdapter extends RecyclerView.Adapter {
         titleViewPager.setAdapter(new ImagePagerAdapter(mContext, imageIdList).setInfiniteLoop(true));
         titleViewPager.setInterval(2000);
         titleViewPager.startAutoScroll();
+    }
+
+    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
+    public void setmOnItemClickListener(OnRecyclerViewItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public interface OnRecyclerViewItemClickListener {
+
+        void onItemClick(View view , Object t);
     }
 }

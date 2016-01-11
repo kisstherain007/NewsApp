@@ -21,6 +21,7 @@
     <dimen name="common_margin_right_xsmall">5dp</dimen>
     <dimen name="common_margin_right_small">8dp</dimen>
     <dimen name="common_margin_right_middle">18dp</dimen>
+    <dimen name="common_margin_right_smiddle">15dp</dimen>
     <dimen name="common_margin_right_large">28dp</dimen>
 
 
