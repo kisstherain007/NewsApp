@@ -16,6 +16,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ktr.ktrsupportlibrary.autoScrollViewPager.AutoScrollViewPager;
+import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.ktrsupportlibrary.pagerAdapter.ImagePagerAdapter;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
@@ -27,6 +28,8 @@ import java.util.List;
  * Created by kisstherain on 2015/10/11.
  */
 public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnClickListener{
+
+    public static final String TAG = KRecyclerAdapter.class.getSimpleName();
 
     public static final int titleType = 0;
 
@@ -101,9 +104,10 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
                     kViewHolder.contentImage.setVisibility(View.VISIBLE);
 
                     Log.i("imageUrl", contentlistBean.getImageurls().get(0).getUrl());
-                    Uri uri = Uri.parse(contentlistBean.getImageurls().get(0).getUrl());
-                    DraweeController draweeController1 = Fresco.newDraweeControllerBuilder().setUri(uri).setAutoPlayAnimations(true).build();
-                    kViewHolder.contentImage.setController(draweeController1);
+//                    Uri uri = Uri.parse(contentlistBean.getImageurls().get(0).getUrl());
+                    BitmapLoader.getInstance().display(kViewHolder.contentImage, contentlistBean.getImageurls().get(0).getUrl());
+//                    DraweeController draweeController1 = Fresco.newDraweeControllerBuilder().setUri(uri).setAutoPlayAnimations(true).build();
+//                    kViewHolder.contentImage.setController(draweeController1);
                 }else{
 
                     kViewHolder.contentImage.setVisibility(View.GONE);
@@ -127,7 +131,7 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
         TextView contextTextView;
         TextView date_textView;
 
-        SimpleDraweeView contentImage;
+         ImageView contentImage;
 
         public KViewHolder(View itemView) {
             super(itemView);
@@ -135,7 +139,7 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
             titleTextView = (TextView) itemView.findViewById(R.id.title_textView);
             contextTextView = (TextView) itemView.findViewById(R.id.content_textView);
             date_textView = (TextView) itemView.findViewById(R.id.date_textView);
-            contentImage = (SimpleDraweeView) itemView.findViewById(R.id.content_img);
+            contentImage = (ImageView) itemView.findViewById(R.id.content_img);
         }
     }
 
