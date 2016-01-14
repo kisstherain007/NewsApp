@@ -7,6 +7,7 @@ import android.graphics.Rect;
 
 import com.ktr.ktrsupportlibrary.utils.ScreenUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -43,13 +44,17 @@ public class BitmapProcess {
             imageConfig.setMaxWidth(maxWidth);
             imageConfig.setMaxHeight(maxHeight);
 
-            bitmap = new BitmapCompress().compress(bitmapBytes, imageConfig, options.outWidth, options.outHeight);
+            bitmap = new TimelineThumbBitmapCompress().compress(bitmapBytes, imageConfig, options.outWidth, options.outHeight);
         }
 
         if (bitmap == null){
 
             bitmap = BitmapDecoder.decodeSampledBitmapFromByte(bitmapBytes);
         }
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+//        byte[] bytes = out.toByteArray();
 
         return bitmap;
     }

@@ -5,28 +5,20 @@ import android.os.Environment;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
+import com.ktr.ktrsupportlibrary.common.SupportLibraryApp;
 
 import java.io.File;
 
 /**
  * Created by kisstherain on 2016/1/10.
  */
-public class NewsApp extends Application {
-
-    private static NewsApp ourInstance = null;
-
-    public static NewsApp getInstance() {
-
-        return ourInstance;
-    }
+public class NewsApp extends SupportLibraryApp {
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        ourInstance = this;
-
-        Fresco.initialize(ourInstance, FrescoConfig.getImagePipelineConfig(ourInstance));
+        Fresco.initialize(this, FrescoConfig.getImagePipelineConfig(this));
 
         BitmapLoader.newInstance(this, Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "kisstherainImage" + File.separator);
     }

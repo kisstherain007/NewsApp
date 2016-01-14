@@ -1,5 +1,7 @@
 package com.ktr.ktrsupportlibrary.bitmaploader;
 
+import com.ktr.ktrsupportlibrary.bitmaploader.downloader.IBitmapCompress;
+
 /**
  * Created by n911305 on 2016/1/14.
  */
@@ -8,6 +10,8 @@ public class ImageConfig {
     private int maxWidth = 0;// 图片最大宽度
 
     private int maxHeight = 0;// 图片最大高度
+
+    private Class<? extends IBitmapCompress> bitmapCompress;
 
     public int getMaxWidth() {
         return maxWidth;

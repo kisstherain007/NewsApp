@@ -9,6 +9,8 @@ import android.util.Log;
  */
 public class BitmapCompress {
 
+    public static final String TAG = BitmapCompress.class.getSimpleName();
+
     public Bitmap compress(byte[] bitmapBytes, ImageConfig config, int origW, int origH) {
         Bitmap bitmap = null;
         try {
@@ -25,7 +27,7 @@ public class BitmapCompress {
             e.printStackTrace();
         }
 
-        Log.d(BitmapLoader.TAG, String.format("原始尺寸是%dX%d, 压缩后尺寸是%dX%d", origW, origH, bitmap.getWidth(), bitmap.getHeight()));
+        Log.d(TAG, String.format("原始尺寸是%dX%d, 压缩后尺寸是%dX%d", origW, origH, bitmap.getWidth(), bitmap.getHeight()));
 
         return bitmap;
     }

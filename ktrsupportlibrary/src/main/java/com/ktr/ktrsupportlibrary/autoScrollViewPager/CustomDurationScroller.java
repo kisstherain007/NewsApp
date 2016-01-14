@@ -46,7 +46,7 @@ public class CustomDurationScroller extends Scroller {
     @Override
     public void startScroll(int startX, int startY, int dx, int dy, int duration) {
 
-        Log.i(TAG, "ktr>>>" + (int)(duration * scrollFactor));
+//        Log.i(TAG, "ktr>>>" + (int)(duration * scrollFactor));
 
         super.startScroll(startX, startY, dx, dy, (int)(duration * scrollFactor));
     }
