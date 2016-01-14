@@ -119,9 +119,9 @@ public class BitmapLoader {
 
                 byte[] bitmapBytes = new ImageDownloader().downloadBitmap(imageUrl);
 
-//                bitmapProcess.compressBitmap();
+                Bitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, new ImageConfig());
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
 
                 if (bitmap != null){
                     mImageCache.addBitmapToMemCache(imageUrl, bitmap);
