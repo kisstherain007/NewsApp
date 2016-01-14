@@ -34,6 +34,8 @@ public class BitmapLoader {
 
     private BitmapCache mImageCache;// 图片缓存
 
+    private BitmapProcess bitmapProcess;
+
     private String imageCachePath;// 图片缓存路径
 
     private Map<String, WeakReference<ImageLoaderTask>> taskCache;
@@ -60,6 +62,7 @@ public class BitmapLoader {
         memCacheSize = memCacheSize / 3;
 
         mImageCache = new BitmapCache(memCacheSize);
+        bitmapProcess = new BitmapProcess();
     }
 
     public void display(ImageView imageView, String url){
@@ -115,6 +118,9 @@ public class BitmapLoader {
             try {
 
                 byte[] bitmapBytes = new ImageDownloader().downloadBitmap(imageUrl);
+
+//                bitmapProcess.compressBitmap();
+
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
 
                 if (bitmap != null){

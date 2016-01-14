@@ -30,6 +30,7 @@
             android:choiceMode="singleChoice" >
 
             <fragment
+                android:id="@+id/left_menu"
                 android:name="com.ktr.newsapp.ui.home.menu.DrawerLeftMenuFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
