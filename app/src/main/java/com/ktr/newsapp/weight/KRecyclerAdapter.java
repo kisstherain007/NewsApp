@@ -17,6 +17,7 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ktr.ktrsupportlibrary.autoScrollViewPager.AutoScrollViewPager;
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
+import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.pagerAdapter.ImagePagerAdapter;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
@@ -83,7 +84,6 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
         return viewHolder;
     }
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
 
@@ -105,7 +105,9 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
 
                     Log.i("imageUrl", contentlistBean.getImageurls().get(0).getUrl());
 //                    Uri uri = Uri.parse(contentlistBean.getImageurls().get(0).getUrl());
-                    BitmapLoader.getInstance().display(kViewHolder.contentImage, contentlistBean.getImageurls().get(0).getUrl());
+                    ImageConfig imageConfig = new ImageConfig();
+                    imageConfig.setLoadingRes(R.mipmap.ic_launcher);
+                    BitmapLoader.getInstance().display(kViewHolder.contentImage, contentlistBean.getImageurls().get(0).getUrl(), imageConfig);
 //                    DraweeController draweeController1 = Fresco.newDraweeControllerBuilder().setUri(uri).setAutoPlayAnimations(true).build();
 //                    kViewHolder.contentImage.setController(draweeController1);
                 }else{

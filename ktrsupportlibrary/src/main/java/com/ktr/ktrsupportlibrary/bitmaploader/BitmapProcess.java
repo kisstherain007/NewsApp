@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class BitmapProcess {
 
-    public Bitmap compressBitmap(byte[] bitmapBytes, ImageConfig imageConfig){
+    public CommonBitmap compressBitmap(byte[] bitmapBytes, ImageConfig imageConfig){
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -57,6 +57,6 @@ public class BitmapProcess {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 //        byte[] bytes = out.toByteArray();
 
-        return bitmap;
+        return new CommonBitmap(bitmap, null);
     }
 }

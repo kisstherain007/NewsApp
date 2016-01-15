@@ -13,6 +13,10 @@ public class ImageConfig {
 
     private Class<? extends IBitmapCompress> bitmapCompress;
 
+    private int loadingRes;
+
+    private int loadfaildRes;
+
     public int getMaxWidth() {
         return maxWidth;
     }
@@ -27,5 +31,21 @@ public class ImageConfig {
 
     public void setMaxHeight(int maxHeight) {
         this.maxHeight = maxHeight;
+    }
+
+    public int getLoadfaildRes() {
+        return loadfaildRes;
+    }
+
+    public void setLoadfaildRes(int loadfaildRes) {
+        this.loadfaildRes = loadfaildRes;
+    }
+
+    public int getLoadingRes() {
+        return loadingRes;
+    }
+
+    public void setLoadingRes(int loadingRes) {
+        this.loadingRes = loadingRes;
     }
 }

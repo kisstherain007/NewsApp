@@ -1,30 +1,31 @@
 package com.ktr.ktrsupportlibrary.bitmaploader.downloader;
 
-import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.ktr.ktrsupportlibrary.bitmaploader.CommonBitmap;
 
 
 public class BitmapCache {
 
     private static final String TAG = BitmapCache.class.getSimpleName();
 
-    private LruMemoryCache<String, Bitmap> mMemoryCache;
+    private LruMemoryCache<String, CommonBitmap> mMemoryCache;
 
     public BitmapCache(int memCacheSize) {
         init(memCacheSize);
     }
 
     private void init(int memCacheSize) {
-        mMemoryCache = new LruMemoryCache<String, Bitmap>(memCacheSize) {
+        mMemoryCache = new LruMemoryCache<String, CommonBitmap>(memCacheSize) {
             @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                return BitmapCommonUtils.getBitmapSize(bitmap) * 4;
+            protected int sizeOf(String key, CommonBitmap bitmap) {
+                return BitmapCommonUtils.getBitmapSize(bitmap.getBitmap()) * 4;
             }
         };
 
     }
 
-    public void addBitmapToMemCache(String url, Bitmap bitmap) {
+    public void addBitmapToMemCache(String url, CommonBitmap bitmap) {
         if (url == null || bitmap == null) {
             return;
         }
@@ -36,7 +37,7 @@ public class BitmapCache {
 
     }
 
-    public Bitmap getBitmapFromMemCache(String url) {
+    public CommonBitmap getBitmapFromMemCache(String url) {
 
         Log.i(TAG, "getBitmapFromMemCache" + 1);
 
@@ -44,7 +45,7 @@ public class BitmapCache {
 
             Log.i(TAG, "getBitmapFromMemCache" + 2 + url);
 
-            final Bitmap memBitmap = mMemoryCache.get(url);
+            final CommonBitmap memBitmap = mMemoryCache.get(url);
 
             if (memBitmap != null) {
 

@@ -16,7 +16,9 @@ import com.ktr.ktrsupportlibrary.bitmaploader.downloader.ImageDownloader;
 import com.ktr.ktrsupportlibrary.utils.Utility;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,19 +67,19 @@ public class BitmapLoader {
         bitmapProcess = new BitmapProcess();
     }
 
-    public void display(ImageView imageView, String url){
+    public void display(ImageView imageView, String url, ImageConfig imageConfig){
 
         if (Utility.isEmpty(url)|| imageView == null) return;
 
         if (bitmapHasBeenSet(imageView, url)) return;
 
-        Bitmap bitmap = mImageCache.getBitmapFromMemCache(url);
+        CommonBitmap bitmap = mImageCache.getBitmapFromMemCache(url);
 
         if (bitmap != null){ // get from memory
 
             Log.i(TAG, "get from memory.....");
 
-            imageView.setImageDrawable(new BitmapDrawable(mContext.getResources(), bitmap));
+            imageView.setImageDrawable(new CommonDrawable(mContext.getResources(), bitmap, null));
         }else{
 
             if (!checkTaskExistAndRunning(url)) {
@@ -89,6 +91,9 @@ public class BitmapLoader {
                 ImageLoaderTask imageLoaderTask = new ImageLoaderTask(imageView, url);
                 WeakReference<ImageLoaderTask> taskReference = new WeakReference<ImageLoaderTask>(imageLoaderTask);
                 taskCache.put(url, taskReference);
+
+                setImageLoading(imageView, url, imageConfig);
+
                 imageLoaderTask.execute();
             }else{
 
@@ -97,20 +102,22 @@ public class BitmapLoader {
         }
     }
 
-    public class ImageLoaderTask extends AsyncTask<Void, Void, Bitmap>{
+    public class ImageLoaderTask extends AsyncTask<Void, Void, CommonBitmap>{
 
-        ImageView imageView;
+        private List<WeakReference<ImageView>> imageViewsRef;
         String imageUrl;
         boolean isCompleted = false;
 
         ImageLoaderTask(ImageView imageView, String url){
 
-            this.imageView = imageView;
+            imageViewsRef = new ArrayList<WeakReference<ImageView>>();
+            if (imageView != null)
+                imageViewsRef.add(new WeakReference<ImageView>(imageView));
             this.imageUrl = url;
         }
 
         @Override
-        protected Bitmap doInBackground(Void... params) {
+        protected CommonBitmap doInBackground(Void... params) {
 
             // 本地缓存读取
 
@@ -119,13 +126,16 @@ public class BitmapLoader {
 
                 byte[] bitmapBytes = new ImageDownloader().downloadBitmap(imageUrl);
 
-                Bitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, new ImageConfig());
+                if (!isCancelled()){
 
-                if (bitmap != null){
+                    CommonBitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, new ImageConfig());
 
-                    mImageCache.addBitmapToMemCache(imageUrl, bitmap);
+                    if (bitmap != null){
 
-                    return bitmap;
+                        mImageCache.addBitmapToMemCache(imageUrl, bitmap);
+
+                        return bitmap;
+                    }
                 }
             } catch (Exception e) {
             }
@@ -133,12 +143,34 @@ public class BitmapLoader {
         }
 
         @Override
-        protected void onPostExecute(Bitmap bitmap) {
+        protected void onPostExecute(CommonBitmap bitmap) {
             super.onPostExecute(bitmap);
             if (bitmap != null){
                 isCompleted = true;
-                imageView.setImageDrawable(new BitmapDrawable(mContext.getResources(), bitmap));
+                setImageBitmap(bitmap);
                 taskCache.remove(imageUrl);
+            }
+        }
+
+        void setImageBitmap(CommonBitmap bitmap){
+
+            for (int i = 0; i < imageViewsRef.size(); i++){
+
+                ImageView imageView = imageViewsRef.get(i).get();
+
+                if (imageView != null){
+
+                    Drawable drawable = imageView.getDrawable();
+
+                    if (drawable != null && drawable instanceof CommonDrawable) {
+                        CommonDrawable commonDrawable = (CommonDrawable) drawable;
+//                        if (imageUrl.equals(aisenDrawable.getMyBitmap().getUrl())) {
+//                            MyDrawable myDrawable = new MyDrawable(mContext.getResources(), bitmap, config, null);
+//                            config.getDisplayer().loadCompletedisplay(imageView, myDrawable);
+//                        }
+                        imageView.setImageDrawable(new CommonDrawable(mContext.getResources(), bitmap, null));
+                    }
+                }
             }
         }
     }
@@ -202,4 +234,15 @@ public class BitmapLoader {
         }
     }
 
+    private void setImageFaild(ImageView imageView, ImageConfig imageConfig) {
+        if (imageView != null)
+            imageView.setImageDrawable(
+                    new CommonDrawable(mContext.getResources(), new CommonBitmap(imageConfig.getLoadfaildRes()), imageConfig));
+    }
+
+    private void setImageLoading(ImageView imageView, String url, ImageConfig imageConfig) {
+        if (imageView != null)
+            imageView.setImageDrawable(
+                    new CommonDrawable(mContext.getResources(), new CommonBitmap(imageConfig.getLoadingRes(), url), imageConfig));
+    }
 }
