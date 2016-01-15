@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by kisstherain on 2016/1/13.
@@ -42,6 +43,8 @@ public class BitmapLoader {
 
     private Map<String, WeakReference<ImageLoaderTask>> taskCache;
 
+    private Map<WeakReference<BitmapOwner>, List<WeakReference<ImageLoaderTask>>> ownerMap;
+
     private BitmapLoader(Context context) {
         mContext = context;
         init();
@@ -59,18 +62,62 @@ public class BitmapLoader {
 
     private void init() {
 
+        ownerMap = new HashMap<WeakReference<BitmapOwner>, List<WeakReference<ImageLoaderTask>>>();
         taskCache = new HashMap<String, WeakReference<ImageLoaderTask>>();
         int memCacheSize = 1024 * 1024 * ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
         memCacheSize = memCacheSize / 3;
+
+        Log.i(TAG, "memCacheSize = " + (memCacheSize / 1024 / 1024) + "MB");
 
         mImageCache = new BitmapCache(memCacheSize);
         bitmapProcess = new BitmapProcess();
     }
 
-    public void display(ImageView imageView, String url, ImageConfig imageConfig){
+    private List<WeakReference<ImageLoaderTask>> getTaskCache(BitmapOwner owner) {
+        List<WeakReference<ImageLoaderTask>> taskWorkInOwner = null;
+
+        Set<WeakReference<BitmapOwner>> set = ownerMap.keySet();
+        for (WeakReference<BitmapOwner> key : set)
+            if (key != null && key.get() == owner)
+                taskWorkInOwner = ownerMap.get(key);
+
+        if (taskWorkInOwner == null) {
+            taskWorkInOwner = new ArrayList<WeakReference<ImageLoaderTask>>();
+            ownerMap.put(new WeakReference<BitmapOwner>(owner), taskWorkInOwner);
+        }
+
+        return taskWorkInOwner;
+    }
+
+    public void cancelPotentialTask(BitmapOwner owner) {
+        if (owner == null)
+            return;
+
+        List<WeakReference<ImageLoaderTask>> taskWorkInFragment = getTaskCache(owner);
+        if (taskWorkInFragment != null)
+            for (WeakReference<ImageLoaderTask> taskRef : taskWorkInFragment) {
+                ImageLoaderTask task = taskRef.get();
+                if (task != null) {
+                    task.cancel(true);
+                    Log.d(TAG, String.format("fragemnt销毁，停止线程 url = %s", task.imageUrl));
+                }
+            }
+
+        for (WeakReference<BitmapOwner> key : ownerMap.keySet())
+            if (key != null && key.get() == owner) {
+                ownerMap.remove(key);
+
+                Log.w(TAG, "移除一个owner --->" + owner.toString());
+
+                break;
+            }
+
+        Log.w(TAG, "owner%d个" + ownerMap.size());
+    }
+
+    public void display(BitmapOwner owner, ImageView imageView, String url, ImageConfig imageConfig){
 
         if (Utility.isEmpty(url)|| imageView == null) return;
-
         if (bitmapHasBeenSet(imageView, url)) return;
 
         CommonBitmap bitmap = mImageCache.getBitmapFromMemCache(url);
@@ -80,26 +127,35 @@ public class BitmapLoader {
             Log.i(TAG, "get from memory.....");
 
             imageView.setImageDrawable(new CommonDrawable(mContext.getResources(), bitmap, null));
-        }else{
-
-            if (!checkTaskExistAndRunning(url)) {
-
-                Log.i(TAG, "get from net.....");
-
-                Log.i(TAG, url + "checkTaskExistAndRunning false.....");
-
-                ImageLoaderTask imageLoaderTask = new ImageLoaderTask(imageView, url);
-                WeakReference<ImageLoaderTask> taskReference = new WeakReference<ImageLoaderTask>(imageLoaderTask);
-                taskCache.put(url, taskReference);
-
-                setImageLoading(imageView, url, imageConfig);
-
-                imageLoaderTask.execute();
-            }else{
-
-                Log.i(TAG, url + "checkTaskExistAndRunning true.....");
-            }
         }
+
+        if (!checkTaskExistAndRunning(url)) {
+
+            ImageLoaderTask newTask = display(imageView, url, imageConfig);
+
+            // 添加到fragment当中，当fragment在Destory的时候，清除task列表
+            if (owner != null)
+                getTaskCache(owner).add(new WeakReference<ImageLoaderTask>(newTask));
+
+            newTask = null; /***********有待验证作用.........***********/
+        }
+    }
+
+    public ImageLoaderTask display(ImageView imageView, String url, ImageConfig imageConfig){
+
+//            Log.i(TAG, "get from net.....");
+//
+//            Log.i(TAG, url + "checkTaskExistAndRunning false.....");
+
+            ImageLoaderTask imageLoaderTask = new ImageLoaderTask(imageView, url);
+            WeakReference<ImageLoaderTask> taskReference = new WeakReference<ImageLoaderTask>(imageLoaderTask);
+            taskCache.put(url, taskReference);
+
+            setImageLoading(imageView, url, imageConfig);
+
+            imageLoaderTask.execute();
+
+            return imageLoaderTask;
     }
 
     public class ImageLoaderTask extends AsyncTask<Void, Void, CommonBitmap>{

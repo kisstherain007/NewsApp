@@ -2,6 +2,7 @@ package com.ktr.newsapp.ui.news;
 
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 
@@ -27,6 +28,17 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
         mHandler.post(releaseRunnable);
     }
 
+    Runnable releaseRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            releaseFragment(mCurrentPosition - 1);
+            releaseFragment(mCurrentPosition + 1);
+
+            BitmapLoader.getInstance().clearCache();
+        }
+    };
+
     public void releaseFragment(int position){
 
         if (position < childFragments.size() && position >= 0) {
@@ -39,16 +51,6 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
             }
         }
     }
-
-    Runnable releaseRunnable = new Runnable() {
-        @Override
-        public void run() {
-
-            BitmapLoader.getInstance().clearCache();
-            releaseFragment(mCurrentPosition - 1);
-            releaseFragment(mCurrentPosition + 1);
-        }
-    };
 
     Handler mHandler = new Handler() {};
 }

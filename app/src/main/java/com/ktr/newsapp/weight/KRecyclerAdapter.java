@@ -21,6 +21,7 @@ import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.pagerAdapter.ImagePagerAdapter;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
+import com.ktr.newsapp.ui.news.AReleaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,12 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
 
     List<ContentlistBean> contentlist;
 
-    public KRecyclerAdapter(Context context){
+    AReleaseFragment aReleaseFragment;
+
+    public KRecyclerAdapter(Context context, AReleaseFragment aReleaseFragment){
 
         this.mContext = context;
+        this.aReleaseFragment = aReleaseFragment;
         mLayoutInflater = LayoutInflater.from(mContext);
     }
 
@@ -107,7 +111,7 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
 //                    Uri uri = Uri.parse(contentlistBean.getImageurls().get(0).getUrl());
                     ImageConfig imageConfig = new ImageConfig();
                     imageConfig.setLoadingRes(R.mipmap.ic_launcher);
-                    BitmapLoader.getInstance().display(kViewHolder.contentImage, contentlistBean.getImageurls().get(0).getUrl(), imageConfig);
+                    BitmapLoader.getInstance().display(aReleaseFragment, kViewHolder.contentImage, contentlistBean.getImageurls().get(0).getUrl(), imageConfig);
 //                    DraweeController draweeController1 = Fresco.newDraweeControllerBuilder().setUri(uri).setAutoPlayAnimations(true).build();
 //                    kViewHolder.contentImage.setController(draweeController1);
                 }else{

@@ -45,6 +45,16 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
     ViewPager contentViewPager;
     MyViewPagerAdapter mViewPagerAdapter;
 
+    Fragment mCurrentFragment;
+    int mCurrentPosition = 0;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mCurrentPosition = 0;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.news_fragment, container, false);
@@ -64,13 +74,15 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
         this.childFragments = childFragments;
 
         mViewPagerAdapter = new MyViewPagerAdapter(getFragmentManager());
+        contentViewPager.setOffscreenPageLimit(0);
+        contentViewPager.setAdapter(mViewPagerAdapter);
+        contentViewPager.setCurrentItem(mCurrentPosition);
         slidingTabs.setCustomTabView(R.layout.comm_lay_tab_indicator, android.R.id.text1);
         slidingTabs.setSelectedIndicatorColors(getResources().getColor(R.color.maker_title_color));
         slidingTabs.setDistributeEvenly(false); //是否填充满屏幕的宽度
-        slidingTabs.setOnPageChangeListener(this);
-
-        contentViewPager.setAdapter(mViewPagerAdapter);
         slidingTabs.setViewPager(contentViewPager);
+        slidingTabs.setOnPageChangeListener(this);
+        slidingTabs.setCurrent(mCurrentPosition);
     }
 
     class MyViewPagerAdapter extends FragmentPagerAdapter {
@@ -83,6 +95,7 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
         public Fragment getItem(int position) {
 
             Fragment fragment = childFragments.get(position);
+            mCurrentFragment = fragment;
             return fragment;
         }
 
@@ -102,13 +115,36 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
 
     }
 
+    public Fragment getCurrentFragment() {
+
+        if (mViewPagerAdapter == null || mViewPagerAdapter.getCount() < 0){
+
+            return null;
+        }
+        return childFragments.get(mCurrentPosition);
+    }
+
     @Override
     public void onPageSelected(int position) {
 
+        mCurrentPosition = position;
+
+        Fragment fragment = getCurrentFragment();
+        if (fragment instanceof IStripTabInitData) {
+            ((IStripTabInitData) fragment).onStripTabRequestData();
+        }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+    }
+
+    // 这个接口用于多页面时，只有当前的页面才加载数据，其他不显示的页面暂缓加载
+    // 当每次onPagerSelected的时候，再调用这个接口初始化数据
+    public interface IStripTabInitData {
+
+        public void onStripTabRequestData();
 
     }
 }

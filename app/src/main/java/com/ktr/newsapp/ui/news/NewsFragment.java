@@ -60,6 +60,7 @@ public class NewsFragment extends AutoReleaseFragment {
                     childFragments.add(NewsChildFragment.newInstance(channelList.getChannelId()));
                 }
 
+
                 setTabsData(titleArr, childFragments);
             }
 

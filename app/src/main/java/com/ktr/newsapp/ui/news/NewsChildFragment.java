@@ -23,7 +23,7 @@ import retrofit2.Response;
 /**
  * Created by kisstherain on 2015/11/16.
  */
-public class NewsChildFragment extends AReleaseFragment {
+public class NewsChildFragment extends AReleaseFragment implements AbstractStripTabsFragment.IStripTabInitData {
 
     private static final String TAG = NewsChildFragment.class.getSimpleName();
 
@@ -48,7 +48,7 @@ public class NewsChildFragment extends AReleaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = (KRecyclerView) view.findViewById(R.id.recyclerView);
-        kRecyclerAdapter = new KRecyclerAdapter(this.getActivity());
+        kRecyclerAdapter = new KRecyclerAdapter(this.getActivity(), this);
         recyclerView.setAdapter(kRecyclerAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -61,11 +61,6 @@ public class NewsChildFragment extends AReleaseFragment {
                 NewsDetailActivity.startActivity(getActivity(), ((ContentlistBean) t).getLink());
             }
         });
-
-        if (Utility.notEmpty(mChannelId)) {
-
-            executeSearchByChannelId(mChannelId);
-        }
     }
 
     public void executeSearchByChannelId(String channelId) {
@@ -95,5 +90,14 @@ public class NewsChildFragment extends AReleaseFragment {
     @Override
     protected int[] configCanReleaseIds() {
         return new int[]{R.id.content_img};
+    }
+
+    @Override
+    public void onStripTabRequestData() {
+
+        if (Utility.notEmpty(mChannelId)) {
+
+            executeSearchByChannelId(mChannelId);
+        }
     }
 }
