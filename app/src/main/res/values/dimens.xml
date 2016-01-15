@@ -29,5 +29,6 @@
     <dimen name="view_pager_height">150dp</dimen>
 
     <dimen name="left_menu_item_height">45dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

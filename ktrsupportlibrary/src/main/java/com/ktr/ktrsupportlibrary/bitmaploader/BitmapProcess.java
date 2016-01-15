@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 
+import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.utils.ScreenUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -23,26 +24,26 @@ public class BitmapProcess {
 
         Bitmap bitmap = null;
 
-        int maxWidth = imageConfig.getMaxWidth() == 0 ? ScreenUtil.getScreenWidth() : imageConfig.getMaxWidth();
-        int maxHeight = imageConfig.getMaxHeight() == 0 ? ScreenUtil.getScreenHeight() : imageConfig.getMaxHeight();
+        int maxWidth = imageConfig.getMaxWidth() == 0 ? ScreenUtil.getScreenWidth() / 6 : imageConfig.getMaxWidth();
+        int maxHeight = imageConfig.getMaxHeight() == 0 ? ScreenUtil.getScreenHeight() / 10 : imageConfig.getMaxHeight();
 
-        if (options.outWidth * 1.0f / options.outHeight > 2) {
-            int reqHeight = maxHeight;
+            if (options.outWidth * 1.0f / options.outHeight > 2) {
+                int reqHeight = maxHeight;
 
-            // 截取局部图片
-            BitmapRegionDecoder bitmapDecoder = null;
-            try {
+                // 截取局部图片
+                BitmapRegionDecoder bitmapDecoder = null;
+                try {
 
-                bitmapDecoder = BitmapRegionDecoder.newInstance(bitmapBytes, 0, bitmapBytes.length, true);
-                Rect rect = new Rect(0, 0, options.outWidth, reqHeight);
-                bitmap = bitmapDecoder.decodeRegion(rect, null).copy(Bitmap.Config.ARGB_8888, true);
-            } catch (IOException e) {
-            }
-        } else {
+                    bitmapDecoder = BitmapRegionDecoder.newInstance(bitmapBytes, 0, bitmapBytes.length, true);
+                    Rect rect = new Rect(0, 0, options.outWidth, reqHeight);
+                    bitmap = bitmapDecoder.decodeRegion(rect, null).copy(Bitmap.Config.ARGB_8888, true);
+                } catch (IOException e) {
+                }
+            } else {
 //            bitmap = BitmapDecoder.decodeSampledBitmapFromByte(bitmapBytes, maxWidth, maxHeight);
 
-            imageConfig.setMaxWidth(maxWidth);
-            imageConfig.setMaxHeight(maxHeight);
+                imageConfig.setMaxWidth(maxWidth);
+                imageConfig.setMaxHeight(maxHeight);
 
             bitmap = new TimelineThumbBitmapCompress().compress(bitmapBytes, imageConfig, options.outWidth, options.outHeight);
         }

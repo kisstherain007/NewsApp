@@ -16,4 +16,8 @@
         <item name="android:layout_marginLeft">@dimen/common_margin_right_middle</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

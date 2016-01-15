@@ -1,5 +1,6 @@
 package com.ktr.newsapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,6 +25,9 @@ public class MainActivity extends AbstractActivity implements DrawerLeftMenuFrag
 
         homeFragmentManager = new HomeFragmentManager(this, R.id.fragment_container_layout);
         initView();
+
+//        startActivity(new Intent(this, TestActivity.class));
+//        finish();
     }
 
     private void initView() {

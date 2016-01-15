@@ -1,8 +1,11 @@
-package com.ktr.ktrsupportlibrary.bitmaploader;
+package com.ktr.ktrsupportlibrary.bitmaploader.compress;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.ktr.ktrsupportlibrary.bitmaploader.BitmapDecoder;
+import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 
 /**
  * Created by n911305 on 2016/1/14.

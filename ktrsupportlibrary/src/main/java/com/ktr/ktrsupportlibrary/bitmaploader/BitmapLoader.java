@@ -3,14 +3,13 @@ package com.ktr.ktrsupportlibrary.bitmaploader;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.bitmaploader.downloader.BitmapCache;
 import com.ktr.ktrsupportlibrary.bitmaploader.downloader.ImageDownloader;
 import com.ktr.ktrsupportlibrary.utils.Utility;
@@ -121,10 +120,10 @@ public class BitmapLoader {
 
                 Bitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, new ImageConfig());
 
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-
                 if (bitmap != null){
+
                     mImageCache.addBitmapToMemCache(imageUrl, bitmap);
+
                     return bitmap;
                 }
             } catch (Exception e) {

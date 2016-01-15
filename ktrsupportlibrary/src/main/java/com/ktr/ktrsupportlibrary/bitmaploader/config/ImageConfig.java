@@ -1,6 +1,6 @@
-package com.ktr.ktrsupportlibrary.bitmaploader;
+package com.ktr.ktrsupportlibrary.bitmaploader.config;
 
-import com.ktr.ktrsupportlibrary.bitmaploader.downloader.IBitmapCompress;
+import com.ktr.ktrsupportlibrary.bitmaploader.compress.IBitmapCompress;
 
 /**
  * Created by n911305 on 2016/1/14.

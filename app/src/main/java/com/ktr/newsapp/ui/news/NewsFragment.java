@@ -27,12 +27,7 @@ import retrofit2.Response;
 /**
  * Created by kisstherain on 2016/1/10.
  */
-public class NewsFragment extends AbstractFragment {
-
-    SlidingTabLayout slidingTabs;
-
-    ViewPager contentViewPager;
-    MyViewPagerAdapter mViewPagerAdapter;
+public class NewsFragment extends AutoReleaseFragment {
 
     String[] titleArr;
     List<Fragment> childFragments = new ArrayList<>();
@@ -43,46 +38,9 @@ public class NewsFragment extends AbstractFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.news_fragment, container, false);
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        slidingTabs = (SlidingTabLayout) view.findViewById(R.id.slidingTabs);
-        contentViewPager = (ViewPager) view.findViewById(R.id.pager);
-        mViewPagerAdapter = new MyViewPagerAdapter(getFragmentManager());
-        slidingTabs.setCustomTabView(R.layout.comm_lay_tab_indicator, android.R.id.text1);
-        slidingTabs.setSelectedIndicatorColors(getResources().getColor(R.color.maker_title_color));
-        slidingTabs.setDistributeEvenly(false); //是否填充满屏幕的宽度
-
         executeLoadNewsChannel();
-    }
-
-    class MyViewPagerAdapter extends FragmentPagerAdapter {
-
-        public MyViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            Fragment fragment = childFragments.get(position);
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return childFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return titleArr[position];
-        }
     }
 
     private void executeLoadNewsChannel(){
@@ -102,8 +60,7 @@ public class NewsFragment extends AbstractFragment {
                     childFragments.add(NewsChildFragment.newInstance(channelList.getChannelId()));
                 }
 
-                contentViewPager.setAdapter(mViewPagerAdapter);
-                slidingTabs.setViewPager(contentViewPager);
+                setTabsData(titleArr, childFragments);
             }
 
             @Override
