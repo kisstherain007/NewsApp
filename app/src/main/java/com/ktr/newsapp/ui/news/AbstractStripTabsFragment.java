@@ -36,7 +36,7 @@ import retrofit2.Response;
 /**
  * Created by kisstherain on 2016/1/10.
  */
-public abstract class AbstractStripTabsFragment extends AbstractFragment {
+public abstract class AbstractStripTabsFragment extends AbstractFragment implements ViewPager.OnPageChangeListener{
 
     String[] titleArr;
     List<Fragment> childFragments;
@@ -67,6 +67,7 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment {
         slidingTabs.setCustomTabView(R.layout.comm_lay_tab_indicator, android.R.id.text1);
         slidingTabs.setSelectedIndicatorColors(getResources().getColor(R.color.maker_title_color));
         slidingTabs.setDistributeEvenly(false); //是否填充满屏幕的宽度
+        slidingTabs.setOnPageChangeListener(this);
 
         contentViewPager.setAdapter(mViewPagerAdapter);
         slidingTabs.setViewPager(contentViewPager);
@@ -96,5 +97,18 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment {
         }
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }

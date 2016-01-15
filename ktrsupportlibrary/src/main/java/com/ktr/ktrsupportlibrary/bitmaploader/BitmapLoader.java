@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -170,7 +171,7 @@ public class BitmapLoader {
 
             Drawable drawable = imageView.getDrawable();
 
-            if (drawable != null) {
+            if (drawable != null && !(drawable instanceof ColorDrawable)) {
 
                 return true;
             } else {
@@ -181,4 +182,24 @@ public class BitmapLoader {
 
         return false;
     }
+
+    /**
+     * 清除缓存
+     */
+    public void clearCache() {
+        new ClearImageCacheTask().execute();
+    }
+
+    class ClearImageCacheTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            if (mImageCache != null) {
+                mImageCache.clearMemHalfCache();
+            }
+            return null;
+        }
+    }
+
 }

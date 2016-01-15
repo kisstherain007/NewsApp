@@ -2,7 +2,7 @@ package com.ktr.newsapp.ui.news;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +12,6 @@ import com.ktr.newsapp.R;
 import com.ktr.newsapp.api.ApiManager;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
 import com.ktr.newsapp.bean.newsBean.NewsDetailBean;
-import com.ktr.newsapp.bean.newsBean.NewsDetialPagebean;
-import com.ktr.newsapp.ui.abstractui.AbstractFragment;
 import com.ktr.newsapp.ui.newsDetail.NewsDetailActivity;
 import com.ktr.newsapp.weight.DividerItemDecoration;
 import com.ktr.newsapp.weight.KRecyclerAdapter;
@@ -25,7 +23,7 @@ import retrofit2.Response;
 /**
  * Created by kisstherain on 2015/11/16.
  */
-public class NewsChildFragment extends AbstractFragment {
+public class NewsChildFragment extends AReleaseFragment {
 
     private static final String TAG = NewsChildFragment.class.getSimpleName();
 
@@ -87,5 +85,15 @@ public class NewsChildFragment extends AbstractFragment {
 
             }
         });
+    }
+
+    @Override
+    RecyclerView getReleaseView() {
+        return recyclerView;
+    }
+
+    @Override
+    protected int[] configCanReleaseIds() {
+        return new int[]{R.id.content_img};
     }
 }
