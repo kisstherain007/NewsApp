@@ -77,6 +77,7 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
         contentViewPager.setOffscreenPageLimit(0);
         contentViewPager.setAdapter(mViewPagerAdapter);
         contentViewPager.setCurrentItem(mCurrentPosition);
+
         slidingTabs.setCustomTabView(R.layout.comm_lay_tab_indicator, android.R.id.text1);
         slidingTabs.setSelectedIndicatorColors(getResources().getColor(R.color.maker_title_color));
         slidingTabs.setDistributeEvenly(false); //是否填充满屏幕的宽度

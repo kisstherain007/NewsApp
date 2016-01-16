@@ -3,6 +3,7 @@ package com.ktr.newsapp.ui.news;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,18 @@ public class NewsChildFragment extends AReleaseFragment implements AbstractStrip
 
     KRecyclerView recyclerView;
     KRecyclerAdapter kRecyclerAdapter;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Log.d(TAG, "onActivityCreated");
+
+        if (getPagerCurrentFragment() == this){
+
+            executeRequestData();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +101,17 @@ public class NewsChildFragment extends AReleaseFragment implements AbstractStrip
     }
 
     @Override
+    void executeRequestData() {
+
+        Log.d(TAG, "executeRequestData()");
+
+        if (Utility.notEmpty(mChannelId)) {
+
+            executeSearchByChannelId(mChannelId);
+        }
+    }
+
+    @Override
     protected int[] configCanReleaseIds() {
         return new int[]{R.id.content_img};
     }
@@ -95,9 +119,6 @@ public class NewsChildFragment extends AReleaseFragment implements AbstractStrip
     @Override
     public void onStripTabRequestData() {
 
-        if (Utility.notEmpty(mChannelId)) {
-
-            executeSearchByChannelId(mChannelId);
-        }
+       executeRequestData();
     }
 }

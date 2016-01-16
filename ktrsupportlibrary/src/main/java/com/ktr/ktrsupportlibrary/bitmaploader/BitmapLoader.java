@@ -127,17 +127,18 @@ public class BitmapLoader {
             Log.i(TAG, "get from memory.....");
 
             imageView.setImageDrawable(new CommonDrawable(mContext.getResources(), bitmap, null));
-        }
+        }else{
 
-        if (!checkTaskExistAndRunning(url)) {
+            if (!checkTaskExistAndRunning(url)) {
 
-            ImageLoaderTask newTask = display(imageView, url, imageConfig);
+                ImageLoaderTask newTask = display(imageView, url, imageConfig);
 
-            // 添加到fragment当中，当fragment在Destory的时候，清除task列表
-            if (owner != null)
-                getTaskCache(owner).add(new WeakReference<ImageLoaderTask>(newTask));
+                // 添加到fragment当中，当fragment在Destory的时候，清除task列表
+                if (owner != null)
+                    getTaskCache(owner).add(new WeakReference<ImageLoaderTask>(newTask));
 
-            newTask = null; /***********有待验证作用.........***********/
+                newTask = null; /***********有待验证作用.........***********/
+            }
         }
     }
 

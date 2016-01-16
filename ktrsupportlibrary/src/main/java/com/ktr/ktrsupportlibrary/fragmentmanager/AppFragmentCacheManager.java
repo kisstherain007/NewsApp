@@ -116,5 +116,10 @@ public abstract class AppFragmentCacheManager extends AppAbstractFragmentManager
     	return null;
     }
 
+	public Fragment getFragmentByTag(int tag){
+
+		return fragments.get(tag);
+	}
+
     public abstract void initFragments(SparseArray<Fragment> fragments, FragmentActivity mActivity);
 }

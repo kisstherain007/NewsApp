@@ -16,7 +16,9 @@ public class MainActivity extends AbstractActivity implements DrawerLeftMenuFrag
 
     DrawerLayout drawerLayout;
 
-    HomeFragmentManager homeFragmentManager;
+    public HomeFragmentManager homeFragmentManager;
+
+    public static int MAIN_TAG = HomeFragmentManager.news_tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class MainActivity extends AbstractActivity implements DrawerLeftMenuFrag
 
                 switch (title) {
                     case "新闻":
+                        MAIN_TAG = HomeFragmentManager.news_tag;
                         homeFragmentManager.changeFragmentByCache(HomeFragmentManager.news_tag);
                         break;
                 }

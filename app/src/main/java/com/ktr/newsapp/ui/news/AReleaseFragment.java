@@ -2,7 +2,9 @@ package com.ktr.newsapp.ui.news;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapOwner;
+import com.ktr.newsapp.ui.MainActivity;
 import com.ktr.newsapp.ui.abstractui.AbstractFragment;
 
 /**
@@ -18,6 +21,32 @@ import com.ktr.newsapp.ui.abstractui.AbstractFragment;
 public abstract class AReleaseFragment extends AbstractFragment implements BitmapOwner {
 
     public static final String TAG = AReleaseFragment.class.getSimpleName();
+
+    /**
+     * 请求网络方法调用
+     */
+    abstract void executeRequestData();
+
+    public Fragment getPagerCurrentFragment(){
+
+        if (getActivity() == null ) return null;
+
+        Fragment mainFragment = null;
+
+        if (getActivity() instanceof MainActivity){
+
+            mainFragment = ((MainActivity) getActivity()).homeFragmentManager.getFragmentByTag(MainActivity.MAIN_TAG);
+        }
+
+         if (mainFragment instanceof AbstractStripTabsFragment){
+
+             AbstractStripTabsFragment abstractStripTabsFragment = (AbstractStripTabsFragment) mainFragment;
+
+             return abstractStripTabsFragment.getCurrentFragment();
+         }
+
+        return null;
+    }
 
     public void releaseImageViewByIds() {
 
