@@ -47,17 +47,22 @@ public class BitmapLoader {
 
     private BitmapLoader(Context context) {
         mContext = context;
-        init();
     }
 
     public static BitmapLoader getInstance() {
         return ourInstance;
     }
 
-    public static BitmapLoader newInstance(Context context, String imageCachePath) {
-        ourInstance = new BitmapLoader(context);
-        ourInstance.imageCachePath = imageCachePath;
+    static BitmapLoader newInstance(Context mContext) {
+        ourInstance = new BitmapLoader(mContext);
         return ourInstance;
+    }
+
+    public static BitmapLoader newInstance(Context context, String imageCachePath) {
+        BitmapLoader loader = newInstance(context);
+        loader.imageCachePath = imageCachePath;
+        loader.init();
+        return loader;
     }
 
     private void init() {
@@ -129,7 +134,7 @@ public class BitmapLoader {
             imageView.setImageDrawable(new CommonDrawable(mContext.getResources(), bitmap, null));
         }else{
 
-            if (!checkTaskExistAndRunning(url)) {
+            if (!checkTaskExistAndRunning(url, imageView)) {
 
                 ImageLoaderTask newTask = display(imageView, url, imageConfig);
 
@@ -183,9 +188,9 @@ public class BitmapLoader {
 
                 byte[] bitmapBytes = new ImageDownloader().downloadBitmap(imageUrl);
 
-                if (!isCancelled()){
+                if (!isCancelled() && checkImageBinding()){
 
-                    CommonBitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, new ImageConfig());
+                    CommonBitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, imageUrl, new ImageConfig());
 
                     if (bitmap != null){
 
@@ -202,11 +207,41 @@ public class BitmapLoader {
         @Override
         protected void onPostExecute(CommonBitmap bitmap) {
             super.onPostExecute(bitmap);
+
+            isCompleted = true;
+            taskCache.remove(imageUrl);
+
             if (bitmap != null){
-                isCompleted = true;
+
                 setImageBitmap(bitmap);
-                taskCache.remove(imageUrl);
             }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+
+            isCompleted = true;
+            taskCache.remove(imageUrl);
+        }
+
+        private boolean checkImageBinding() {
+            for (int i = 0; i < imageViewsRef.size(); i++) {
+
+                ImageView imageView = imageViewsRef.get(i).get();
+                if (imageView != null) {
+
+                    Drawable drawable = imageView.getDrawable();
+                    if (drawable != null && drawable instanceof CommonDrawable) {
+
+                        CommonDrawable aisenDrawable = (CommonDrawable) drawable;
+                        if (imageUrl.equals(aisenDrawable.getMyBitmap().getUrl())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
         void setImageBitmap(CommonBitmap bitmap){
@@ -232,7 +267,7 @@ public class BitmapLoader {
         }
     }
 
-    public boolean checkTaskExistAndRunning(String url) {
+    public boolean checkTaskExistAndRunning(String url, ImageView imageView) {
 
         WeakReference<ImageLoaderTask> imageLoaderTask = taskCache.get(url);
 
@@ -244,6 +279,8 @@ public class BitmapLoader {
 
                 if (!oaderTask.isCancelled() && !oaderTask.isCompleted && oaderTask.imageUrl.equals(url)) {
 
+                    oaderTask.imageViewsRef.add(new WeakReference<ImageView>(imageView));
+                    Log.d(TAG, String.format("ImageView加载的图片已有线程在运行，url = %s", url));
                     return true;
                 }
             }
@@ -251,7 +288,27 @@ public class BitmapLoader {
             taskCache.remove(url);
         }
 
+        // 还没有线程，判断ImageView是否已经绑定了线程，如果绑定了，就将已存在的线程cancel(false)掉
+        ImageLoaderTask task = getWorkingTask(imageView);
+        if (task != null && !task.imageUrl.equals(url) && task.imageViewsRef.size() == 1) {
+            Log.d(TAG, String.format("停止一个图片加载，如果还没有运行 url = %s", url));
+            task.cancel(false);
+        }
+
         return false;
+    }
+
+    private ImageLoaderTask getWorkingTask(ImageView imageView) {
+        if (imageView == null)
+            return null;
+
+        Drawable drawable = imageView.getDrawable();
+        if (drawable != null && drawable instanceof CommonDrawable) {
+            WeakReference<ImageLoaderTask> loader = ((CommonDrawable) drawable).getTask();
+            if (loader != null && loader.get() != null)
+                return loader.get();
+        }
+        return null;
     }
 
     public boolean bitmapHasBeenSet(ImageView imageView, String url) {
@@ -260,12 +317,14 @@ public class BitmapLoader {
 
             Drawable drawable = imageView.getDrawable();
 
-            if (drawable != null && !(drawable instanceof ColorDrawable)) {
+            if (drawable != null) {
 
-                return true;
-            } else {
-
-                return false;
+                if (drawable instanceof CommonDrawable){
+                    CommonDrawable commonDrawable = (CommonDrawable) drawable;
+                    if (commonDrawable.getMyBitmap() != null && url.equals(commonDrawable.getMyBitmap().getUrl())){
+                        return true;
+                    }
+                }
             }
         }
 
@@ -284,9 +343,12 @@ public class BitmapLoader {
         @Override
         protected Void doInBackground(Void... params) {
 
+            Log.d(TAG, mImageCache.toString());
+
             if (mImageCache != null) {
-                mImageCache.clearMemHalfCache();
+                mImageCache.clearMemCache();
             }
+
             return null;
         }
     }

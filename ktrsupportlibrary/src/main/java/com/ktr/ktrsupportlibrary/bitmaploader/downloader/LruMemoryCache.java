@@ -18,6 +18,8 @@ package com.ktr.ktrsupportlibrary.bitmaploader.downloader;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.ktr.ktrsupportlibrary.bitmaploader.CommonBitmap;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -104,35 +106,6 @@ public class LruMemoryCache<K, V> {
 	}
 
 	/**
-	 * Caches {@code value} for {@code key}. The value is moved to the head of
-	 * the queue.
-	 * 
-	 * @return the previous value mapped by {@code key}.
-	 */
-	public final V put(K key, V value) {
-		if (key == null || value == null) {
-			throw new NullPointerException("key == null || value == null");
-		}
-
-		V previous;
-		synchronized (this) {
-			putCount++;
-			size += safeSizeOf(key, value);
-			previous = map.put(key, value);
-			if (previous != null) {
-				size -= safeSizeOf(key, previous);
-			}
-		}
-
-		if (previous != null) {
-			entryRemoved(false, key, previous, value);
-		}
-
-		trimToSize(maxSize);
-		return previous;
-	}
-
-	/**
 	 * @param maxSize
 	 *            the maximum size of the cache before returning. May be -1 to
 	 *            evict even 0-sized elements.
@@ -158,7 +131,7 @@ public class LruMemoryCache<K, V> {
 				int recyleSize = safeSizeOf(key, value);
 				size -= recyleSize;
 				// MARK 释放对象的同时释放掉内存
-				if (value instanceof Bitmap) {
+				if (value instanceof CommonBitmap) {
 					Log.d(LruMemoryCache.class.getSimpleName(),
 							"recyle size = " + (recyleSize / 1024) + "kb");
 				}
@@ -167,6 +140,35 @@ public class LruMemoryCache<K, V> {
 
 			entryRemoved(true, key, value, null);
 		}
+	}
+
+	/**
+	 * Caches {@code value} for {@code key}. The value is moved to the head of
+	 * the queue.
+	 *
+	 * @return the previous value mapped by {@code key}.
+	 */
+	public final V put(K key, V value) {
+		if (key == null || value == null) {
+			throw new NullPointerException("key == null || value == null");
+		}
+
+		V previous;
+		synchronized (this) {
+			putCount++;
+			size += safeSizeOf(key, value);
+			previous = map.put(key, value);
+			if (previous != null) {
+				size -= safeSizeOf(key, previous);
+			}
+		}
+
+		if (previous != null) {
+			entryRemoved(false, key, previous, value);
+		}
+
+		trimToSize(maxSize);
+		return previous;
 	}
 
 	/**
@@ -214,16 +216,16 @@ public class LruMemoryCache<K, V> {
 	 */
 	protected void entryRemoved(boolean evicted, K key, V oldValue, V newValue) {
 		// XXX 这里做了修改，在更新资源的时候做释放处理
-		// if (oldValue != null && oldValue instanceof MyBitmap) {
-		// MyBitmap MyBitmap = (MyBitmap) oldValue;
-		// if (MyBitmap.getBitmap() != null
-		// && !MyBitmap.getBitmap().isRecycled()) {
-		// LogUtil.d(LruMemoryCache.class.getSimpleName(),
-		// "recyle size = " + (sizeOf(key, oldValue) / 1024)
-		// + "kb");
-		// MyBitmap.getBitmap().recycle();
-		// }
-		// }
+//		 if (oldValue != null && oldValue instanceof CommonBitmap) {
+//			 CommonBitmap MyBitmap = (CommonBitmap) oldValue;
+//		 if (MyBitmap.getBitmap() != null
+//		 && !MyBitmap.getBitmap().isRecycled()) {
+////		 LogUtil.d(LruMemoryCache.class.getSimpleName(),
+////		 "recyle size = " + (sizeOf(key, oldValue) / 1024)
+////		 + "kb");
+//		 MyBitmap.getBitmap().recycle();
+//		 }
+//		 }
 	}
 
 	/**

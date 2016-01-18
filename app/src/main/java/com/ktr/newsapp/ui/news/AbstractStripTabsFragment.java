@@ -56,8 +56,8 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.news_fragment, container, false);
+    protected int inflateContentView() {
+        return R.layout.news_fragment;
     }
 
     @Override

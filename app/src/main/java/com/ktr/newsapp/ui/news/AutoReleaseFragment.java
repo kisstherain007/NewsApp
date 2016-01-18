@@ -2,7 +2,6 @@ package com.ktr.newsapp.ui.news;
 
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 
@@ -18,15 +17,29 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
         super.onPageSelected(position);
 
         mCurrentPosition = position;
-        mHandler.post(releaseRunnable);
+
+        mHandler.removeCallbacks(releaseRunnable);
+        mHandler.postDelayed(releaseRunnable, Math.round(2.0f * 1000));
+
+        // 刷新当前显示
+        mHandler.removeCallbacks(refreshRunnable);
+        mHandler.postDelayed(refreshRunnable, 700);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        mHandler.post(releaseRunnable);
+        mHandler.removeCallbacks(refreshRunnable);
+        mHandler.removeCallbacks(releaseRunnable);
     }
+
+    Runnable refreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            BitmapLoader.getInstance().clearCache();
+        }
+    };
 
     Runnable releaseRunnable = new Runnable() {
         @Override
@@ -34,8 +47,6 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
 
             releaseFragment(mCurrentPosition - 1);
             releaseFragment(mCurrentPosition + 1);
-
-            BitmapLoader.getInstance().clearCache();
         }
     };
 
@@ -45,9 +56,9 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
 
             Fragment fragment = childFragments.get(position);
 
-            if (fragment != null && fragment instanceof AReleaseFragment){
+            if (fragment != null && fragment instanceof ARecylclerReleaseFragment){
 
-                ((AReleaseFragment)fragment).releaseImageViewByIds();
+                ((ARecylclerReleaseFragment) fragment).releaseImageViewByIds();
             }
         }
     }

@@ -22,7 +22,7 @@ public class BitmapCache {
                 return BitmapCommonUtils.getBitmapSize(bitmap.getBitmap()) * 4;
             }
         };
-
+        mMemoryCache.size();
     }
 
     public void addBitmapToMemCache(String url, CommonBitmap bitmap) {
@@ -67,5 +67,14 @@ public class BitmapCache {
         if (mMemoryCache != null) {
             mMemoryCache.evictHalf();
         }
+    }
+
+    public int getSize(){
+        return mMemoryCache.size();
+    }
+
+    @Override
+    public String toString() {
+        return mMemoryCache.toString();
     }
 }

@@ -13,6 +13,7 @@ public class CommonDrawable extends BitmapDrawable {
 
     private CommonBitmap myBitmap;
     private ImageConfig config;
+    private WeakReference<BitmapLoader.ImageLoaderTask> task;
 
     public CommonDrawable(Resources res, Bitmap bitmap) {
         super(res, bitmap);
@@ -30,5 +31,21 @@ public class CommonDrawable extends BitmapDrawable {
 
     public void setConfig(ImageConfig config) {
         this.config = config;
+    }
+
+    public WeakReference<BitmapLoader.ImageLoaderTask> getTask() {
+        return task;
+    }
+
+    public void setTask(WeakReference<BitmapLoader.ImageLoaderTask> task) {
+        this.task = task;
+    }
+
+    public CommonBitmap getMyBitmap() {
+        return myBitmap;
+    }
+
+    public void setMyBitmap(CommonBitmap myBitmap) {
+        this.myBitmap = myBitmap;
     }
 }

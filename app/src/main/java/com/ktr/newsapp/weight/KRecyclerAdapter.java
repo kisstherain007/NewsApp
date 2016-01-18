@@ -1,27 +1,22 @@
 package com.ktr.newsapp.weight;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.ktr.ktrsupportlibrary.autoScrollViewPager.AutoScrollViewPager;
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.pagerAdapter.ImagePagerAdapter;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
-import com.ktr.newsapp.ui.news.AReleaseFragment;
+import com.ktr.newsapp.ui.news.ARecylclerReleaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +36,9 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
 
     List<ContentlistBean> contentlist;
 
-    AReleaseFragment aReleaseFragment;
+    ARecylclerReleaseFragment aReleaseFragment;
 
-    public KRecyclerAdapter(Context context, AReleaseFragment aReleaseFragment){
+    public KRecyclerAdapter(Context context, ARecylclerReleaseFragment aReleaseFragment){
 
         this.mContext = context;
         this.aReleaseFragment = aReleaseFragment;
@@ -131,7 +126,7 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
         }
     }
 
-     class KViewHolder extends RecyclerView.ViewHolder{
+    public class KViewHolder extends RecyclerView.ViewHolder{
 
         TextView titleTextView;
         TextView contextTextView;

@@ -35,8 +35,8 @@ public class DrawerLeftMenuFragment extends AbstractFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.drawer_menu_layout, container, false);
+    protected int inflateContentView() {
+        return R.layout.drawer_menu_layout;
     }
 
     @Override

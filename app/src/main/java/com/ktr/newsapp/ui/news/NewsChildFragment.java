@@ -24,7 +24,7 @@ import retrofit2.Response;
 /**
  * Created by kisstherain on 2015/11/16.
  */
-public class NewsChildFragment extends AReleaseFragment implements AbstractStripTabsFragment.IStripTabInitData {
+public class NewsChildFragment extends ARecylclerReleaseFragment implements AbstractStripTabsFragment.IStripTabInitData {
 
     private static final String TAG = NewsChildFragment.class.getSimpleName();
 
@@ -35,9 +35,6 @@ public class NewsChildFragment extends AReleaseFragment implements AbstractStrip
         fragment.mChannelId = channelId;
         return fragment;
     }
-
-    KRecyclerView recyclerView;
-    KRecyclerAdapter kRecyclerAdapter;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -51,18 +48,11 @@ public class NewsChildFragment extends AReleaseFragment implements AbstractStrip
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.news_child_fragment, container, false);
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = (KRecyclerView) view.findViewById(R.id.recyclerView);
-        kRecyclerAdapter = new KRecyclerAdapter(this.getActivity(), this);
-        recyclerView.setAdapter(kRecyclerAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
