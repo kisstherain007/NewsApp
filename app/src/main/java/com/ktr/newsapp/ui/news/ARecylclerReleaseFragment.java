@@ -1,5 +1,6 @@
 package com.ktr.newsapp.ui.news;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -142,7 +143,7 @@ public abstract class ARecylclerReleaseFragment extends AbstractFragment impleme
     @Override
     public void onPause() {
         super.onPause();
-        mHandler.postDelayed(releaseRunnable, 100);
+//        mHandler.postDelayed(releaseRunnable, 100);
     }
 
     @Override
@@ -158,17 +159,24 @@ public abstract class ARecylclerReleaseFragment extends AbstractFragment impleme
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG, "onDestroyView.......");
-        if (BitmapLoader.getInstance() != null)
-            BitmapLoader.getInstance().cancelPotentialTask(this);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(TAG, "onAttach.......");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         Log.d(TAG, "onDetach.......");
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView.......");
+        if (BitmapLoader.getInstance() != null)
+            BitmapLoader.getInstance().cancelPotentialTask(this);
     }
 
     protected int[] configCanReleaseIds() {

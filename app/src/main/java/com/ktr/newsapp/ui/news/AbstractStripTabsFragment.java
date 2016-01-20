@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,7 +87,7 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
         slidingTabs.setCurrent(mCurrentPosition);
     }
 
-    class MyViewPagerAdapter extends FragmentPagerAdapter {
+    class MyViewPagerAdapter extends FragmentStatePagerAdapter {
 
         public MyViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -96,7 +97,9 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
         public Fragment getItem(int position) {
 
             Fragment fragment = childFragments.get(position);
+
             mCurrentFragment = fragment;
+
             return fragment;
         }
 
