@@ -53,6 +53,7 @@ public class NewsChildFragment extends ARecylclerReleaseFragment implements Abst
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d(TAG, "onViewCreated");
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));

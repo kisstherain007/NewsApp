@@ -87,7 +87,7 @@ public abstract class AbstractStripTabsFragment extends AbstractFragment impleme
         slidingTabs.setCurrent(mCurrentPosition);
     }
 
-    class MyViewPagerAdapter extends FragmentStatePagerAdapter {
+    class MyViewPagerAdapter extends CanRefreshFPagerAdapter {
 
         public MyViewPagerAdapter(FragmentManager fm) {
             super(fm);

@@ -110,6 +110,17 @@ public abstract class ARecylclerReleaseFragment extends AbstractFragment impleme
         }
     }
 
+    public void refreshUI() {
+        mHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                kRecyclerAdapter.notifyDataSetChanged();
+            }
+
+        }, 200);
+    }
+
     protected boolean releaseImageView(View container) {
         if (configCanReleaseIds() != null) {
             for (int imgId : configCanReleaseIds()) {
