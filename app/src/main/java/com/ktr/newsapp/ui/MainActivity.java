@@ -26,9 +26,6 @@ public class MainActivity extends AbstractActivity implements DrawerLeftMenuFrag
 
         homeFragmentManager = new HomeFragmentManager(this, R.id.fragment_container_layout);
         initView();
-
-//        startActivity(new Intent(this, TestActivity.class));
-//        finish();
     }
 
     private void initView() {
@@ -59,6 +56,10 @@ public class MainActivity extends AbstractActivity implements DrawerLeftMenuFrag
                     case "新闻":
                         MAIN_TAG = HomeFragmentManager.news_tag;
                         homeFragmentManager.changeFragmentByCache(HomeFragmentManager.news_tag);
+                        break;
+                    case "Simple":
+                        MAIN_TAG = HomeFragmentManager.simple_tag;
+                        homeFragmentManager.changeFragmentByCache(HomeFragmentManager.simple_tag);
                         break;
                 }
             }

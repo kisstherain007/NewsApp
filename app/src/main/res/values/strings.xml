@@ -6,6 +6,7 @@
 
     <string-array name="home_title_arry">
         <item>新闻</item>
+        <item>Simple</item>
     </string-array>
     <string name="title_activity_test">TestActivity</string>
 </resources>

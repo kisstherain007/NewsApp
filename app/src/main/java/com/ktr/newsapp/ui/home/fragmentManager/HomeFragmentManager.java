@@ -6,6 +6,7 @@ import android.util.SparseArray;
 
 import com.ktr.ktrsupportlibrary.fragmentmanager.AppFragmentCacheManager;
 import com.ktr.newsapp.ui.news.NewsFragment;
+import com.ktr.newsapp.ui.simple.SimpleFragment;
 
 
 /**
@@ -15,6 +16,8 @@ public class HomeFragmentManager extends AppFragmentCacheManager {
 
     public static final int news_tag = 0;
 
+    public static final int simple_tag = 1;
+
     public HomeFragmentManager(FragmentActivity fragmentActivity, int layoutRes) {
         super(fragmentActivity, layoutRes);
     }
@@ -23,6 +26,7 @@ public class HomeFragmentManager extends AppFragmentCacheManager {
     public void initFragments(SparseArray<Fragment> fragments, FragmentActivity mActivity) {
 
         fragments.append(news_tag, getNewsFragment());
+        fragments.append(simple_tag, getSimpFragment());
     }
 
     public void changeFragmentByCache(int fragmentId) {
@@ -32,5 +36,10 @@ public class HomeFragmentManager extends AppFragmentCacheManager {
     private Fragment getNewsFragment(){
 
         return NewsFragment.newInstance();
+    }
+
+    private Fragment getSimpFragment(){
+
+        return SimpleFragment.newInstance();
     }
 }
