@@ -105,7 +105,7 @@ public abstract class ARecylclerReleaseFragment extends AbstractFragment impleme
                     }
                 }
 
-                viewCache.clear();
+//                viewCache.clear();
             }
         }
     }
@@ -154,19 +154,21 @@ public abstract class ARecylclerReleaseFragment extends AbstractFragment impleme
     @Override
     public void onPause() {
         super.onPause();
-//        mHandler.postDelayed(releaseRunnable, 100);
+        mHandler.postDelayed(releaseRunnable, 5 * 1000);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mHandler.removeCallbacks(releaseRunnable);
+//        mHandler.removeCallbacks(releaseRunnable);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestory.......");
+        if (BitmapLoader.getInstance() != null)
+            BitmapLoader.getInstance().cancelPotentialTask(this);
     }
 
     @Override
@@ -186,8 +188,6 @@ public abstract class ARecylclerReleaseFragment extends AbstractFragment impleme
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(TAG, "onDestroyView.......");
-        if (BitmapLoader.getInstance() != null)
-            BitmapLoader.getInstance().cancelPotentialTask(this);
     }
 
     protected int[] configCanReleaseIds() {
