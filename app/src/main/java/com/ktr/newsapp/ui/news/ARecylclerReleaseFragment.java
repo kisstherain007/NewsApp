@@ -17,6 +17,7 @@ import com.ktr.ktrsupportlibrary.inject.ViewInject;
 import com.ktr.ktrsupportlibrary.ui.BaseFragment;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.ui.MainActivity;
+import com.ktr.newsapp.weight.DisplayPicsView;
 import com.ktr.newsapp.weight.KRecyclerAdapter;
 import com.ktr.newsapp.weight.KRecyclerView;
 
@@ -28,7 +29,7 @@ import java.util.Set;
 /**
  * Created by n911305 on 2016/1/15.
  */
-public abstract class ARecylclerReleaseFragment extends BaseFragment implements BitmapOwner, RecyclerView.RecyclerListener {
+public abstract class ARecylclerReleaseFragment extends BaseFragment implements RecyclerView.RecyclerListener {
 
     public static final String TAG = ARecylclerReleaseFragment.class.getSimpleName();
 
@@ -81,6 +82,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
     public void releaseImageViewByIds() {
 
         if (getReleaseView() != null) {
+
             int childSize = getReleaseView().getChildCount();
             for (int i = 0; i < childSize; i++) {
                 View view = getReleaseView().getChildAt(i);
@@ -120,6 +122,13 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
     }
 
     protected boolean releaseImageView(View container) {
+
+        DisplayPicsView displayPicsView = (DisplayPicsView) container.findViewById(R.id.display_view);
+        if (displayPicsView != null){
+            Log.d(TAG, "displayPicsView.release();");
+            displayPicsView.release();
+        }
+
         if (configCanReleaseIds() != null) {
             for (int imgId : configCanReleaseIds()) {
                 ImageView imgView = (ImageView) container.findViewById(imgId);
@@ -190,11 +199,6 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
 
     protected int[] configCanReleaseIds() {
         return null;
-    }
-
-    @Override
-    public boolean canDisplay() {
-        return true;
     }
 
     abstract RecyclerView getReleaseView();

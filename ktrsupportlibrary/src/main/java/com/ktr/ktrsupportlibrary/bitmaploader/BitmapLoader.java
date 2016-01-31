@@ -14,8 +14,10 @@ import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.bitmaploader.downloader.BitmapCache;
 import com.ktr.ktrsupportlibrary.bitmaploader.downloader.ImageDownloader;
 import com.ktr.ktrsupportlibrary.utils.BitmapTask;
+import com.ktr.ktrsupportlibrary.utils.Logger;
 import com.ktr.ktrsupportlibrary.utils.Utility;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,7 +78,7 @@ public class BitmapLoader {
         Log.i(TAG, "memCacheSize = " + (memCacheSize / 1024 / 1024) + "MB");
 
         mImageCache = new BitmapCache(memCacheSize);
-        bitmapProcess = new BitmapProcess();
+        bitmapProcess = new BitmapProcess(imageCachePath);
     }
 
     private List<WeakReference<ImageLoaderTask>> getTaskCache(BitmapOwner owner) {
@@ -185,7 +187,8 @@ public class BitmapLoader {
             // 网络下载
             try {
 
-                byte[] bitmapBytes = new ImageDownloader().downloadBitmap(imageUrl);
+                //
+                byte[] bitmapBytes = doDownLoad(imageUrl, new ImageConfig());
 
                 if (!isCancelled() && checkImageBinding()){
 
@@ -331,6 +334,42 @@ public class BitmapLoader {
         }
 
         return false;
+    }
+
+    public byte[] doDownLoad(String imageUrl, ImageConfig imageConfig) throws Exception {
+
+        byte[] bitmapBytes = null;
+
+        // 判断二级缓存数据
+        bitmapBytes = bitmapProcess.getBitmapFromCompDiskCache(imageUrl, imageConfig);
+
+        // 判断原始缓存数据
+        if (bitmapBytes == null) {
+            bitmapBytes = bitmapProcess.getBitmapFromOrigDiskCache(imageUrl, imageConfig);
+            if (bitmapBytes != null) {
+                Logger.v(TAG, "load the data through the original disk, url = " + imageUrl);
+            }
+        }
+
+        // 网络加载
+        if (bitmapBytes == null) {
+            bitmapBytes = new ImageDownloader().downloadBitmap(imageUrl);
+//            bitmapBytes = config.getDownloaderClass().newInstance().downloadBitmap(imageUrl, config);
+            // 数据写入原始缓存
+            if (bitmapBytes != null/* && config.isCacheEnable()*/)
+                bitmapProcess.writeBytesToOrigDisk(bitmapBytes, imageUrl);
+        }
+
+        if (bitmapBytes != null){
+
+            return bitmapBytes;
+        }
+
+        throw new Exception("download faild");
+    }
+
+    public File getCacheFile(String url) {
+        return bitmapProcess.getOirgFile(url);
     }
 
     /**

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ktr.ktrsupportlibrary.R;
+import com.ktr.ktrsupportlibrary.common.setting.SettingUtility;
 import com.ktr.ktrsupportlibrary.inject.InjectUtility;
 
 import java.lang.ref.WeakReference;
@@ -29,9 +30,25 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+        if (mHelper == null) {
+            try {
+                if (SettingUtility.getStringSetting("activity_helper") != null) {
+                    mHelper = (BaseActivityHelper) Class.forName(SettingUtility.getStringSetting("activity_helper")).newInstance();
+                    mHelper.bindActivity(this);
+                }
+            } catch (Exception e) {
+
+            }
+        }
+
+        if (mHelper != null)
+            mHelper.onCreate(savedInstanceState);
 
         fragmentRefs = new HashMap<String, WeakReference<BaseFragment>>();
+
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override

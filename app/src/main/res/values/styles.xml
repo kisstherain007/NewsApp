@@ -20,4 +20,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="display_pic_img_style">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@color/black</item>
+    </style>
 </resources>

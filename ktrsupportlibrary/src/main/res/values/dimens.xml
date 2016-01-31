@@ -1,0 +1,31 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="gap_pics">2dp</dimen>
+
+    <!--字体大小-->
+    <dimen name="textsize_xxlarge">28sp</dimen>
+    <dimen name="textsize_xlarge">22sp</dimen>
+    <dimen name="textsize_large">18sp</dimen>
+    <dimen name="textsize_xmiddle">16sp</dimen>
+    <dimen name="textsize_middle">14sp</dimen>
+    <dimen name="textsize_small">12sp</dimen>
+    <dimen name="textsize_xsmall">8sp</dimen>
+    <dimen name="textsize_xxsmall">5sp</dimen>
+
+    <dimen name="header_width">72dp</dimen>
+    <dimen name="header_height">72dp</dimen>
+    <dimen name="common_margin_right_xsmall">5dp</dimen>
+    <dimen name="common_margin_right_small">8dp</dimen>
+    <dimen name="common_margin_right_middle">18dp</dimen>
+    <dimen name="common_margin_right_large">28dp</dimen>
+
+
+    <dimen name="view_pager_witdh">450dp</dimen>
+    <dimen name="view_pager_height">150dp</dimen>
+
+    <dimen name="left_menu_item_height">45dp</dimen>
+
+</resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.ktr.newsapp.weight.DisplayPicsView
+        android:id="@+id/display_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img01"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img02"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img03"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img04"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img05"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img06"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img07"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img08"
+            style="@style/display_pic_img_style" />
+
+        <ImageView
+            android:id="@+id/img09"
+            style="@style/display_pic_img_style" />
+
+    </com.ktr.newsapp.weight.DisplayPicsView>
+</LinearLayout>

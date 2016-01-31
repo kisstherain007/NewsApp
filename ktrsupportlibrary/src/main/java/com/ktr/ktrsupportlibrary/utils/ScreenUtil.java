@@ -2,6 +2,7 @@ package com.ktr.ktrsupportlibrary.utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.WindowManager;
 
 import com.ktr.ktrsupportlibrary.common.SupportLibraryApp;
@@ -42,5 +43,19 @@ public class ScreenUtil {
         if (density == 0.0f)
             setScreenInfo();
         return density;
+    }
+
+    public static int dip2px(int dipValue) {
+        float reSize = SupportLibraryApp.getInstance().getResources().getDisplayMetrics().density;
+        return (int) ((dipValue * reSize) + 0.5);
+    }
+
+    public static int px2dip(int pxValue) {
+        float reSize = SupportLibraryApp.getInstance().getResources().getDisplayMetrics().density;
+        return (int) ((pxValue / reSize) + 0.5);
+    }
+
+    public static float sp2px(int spValue) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, SupportLibraryApp.getInstance().getResources().getDisplayMetrics());
     }
 }
