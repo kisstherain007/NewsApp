@@ -1,4 +1,4 @@
-package com.ktr.newsapp.weight;
+package com.ktr.ktrsupportlibrary.weight;
 
 import android.content.Context;
 import android.support.v7.widget.Toolbar;

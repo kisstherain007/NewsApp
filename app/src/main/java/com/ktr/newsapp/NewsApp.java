@@ -7,8 +7,8 @@ import android.os.Environment;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.ktrsupportlibrary.common.SupportLibraryApp;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ import java.io.File;
  */
 public class NewsApp extends SupportLibraryApp {
 
-    private RefWatcher refWatcher;
+//    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
@@ -27,11 +27,11 @@ public class NewsApp extends SupportLibraryApp {
 
         BitmapLoader.newInstance(this, Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "kisstherainImage" + File.separator);
 
-        refWatcher = LeakCanary.install(this);
+//        refWatcher = LeakCanary.install(this);
     }
 
-    public static RefWatcher getRefWatcher(Context context) {
-        NewsApp application = (NewsApp) context.getApplicationContext();
-        return application.refWatcher;
-    }
+//    public static RefWatcher getRefWatcher(Context context) {
+//        NewsApp application = (NewsApp) context.getApplicationContext();
+//        return application.refWatcher;
+//    }
 }

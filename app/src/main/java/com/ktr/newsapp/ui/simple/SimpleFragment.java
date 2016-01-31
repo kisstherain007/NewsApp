@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.ktr.ktrsupportlibrary.autoScrollViewPager.AutoScrollViewPager;
 import com.ktr.ktrsupportlibrary.customViewPager.AutoHeightViewPager;
 import com.ktr.ktrsupportlibrary.pagerAdapter.ImagePagerAdapter;
+import com.ktr.ktrsupportlibrary.ui.BaseFragment;
 import com.ktr.newsapp.R;
-import com.ktr.newsapp.ui.abstractui.AbstractFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 /**
  * Created by kisstherain on 2016/1/26.
  */
-public class SimpleFragment extends AbstractFragment {
+public class SimpleFragment extends BaseFragment {
 
     AutoHeightViewPager content_viewPager;
     AutoScrollViewPager autoScrollViewPager;

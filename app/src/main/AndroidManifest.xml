@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.newsDetail.NewsDetailActivity" />
+        <activity android:name=".ui.newsDetail.NewsWebDetailActivity" />
+        <activity android:name=".ui.newsDetail.NewsNativeDetailActivity"/>
         <activity
             android:name=".ui.TestActivity"
             android:label="@string/title_activity_test"

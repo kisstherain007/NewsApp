@@ -6,12 +6,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.View;
 
+import com.ktr.ktrsupportlibrary.ui.BaseActivity;
 import com.ktr.newsapp.R;
-import com.ktr.newsapp.ui.abstractui.AbstractActivity;
 import com.ktr.newsapp.ui.home.fragmentManager.HomeFragmentManager;
 import com.ktr.newsapp.ui.home.menu.DrawerLeftMenuFragment;
 
-public class MainActivity extends AbstractActivity implements DrawerLeftMenuFragment.OnLeftMenuItemClickListener {
+public class MainActivity extends BaseActivity implements DrawerLeftMenuFragment.OnLeftMenuItemClickListener {
 
     DrawerLayout drawerLayout;
 

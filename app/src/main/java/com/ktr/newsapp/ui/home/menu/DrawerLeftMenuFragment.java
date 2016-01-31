@@ -3,18 +3,16 @@ package com.ktr.newsapp.ui.home.menu;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 
 import com.ktr.ktrsupportlibrary.adapter.BaseAdapterHelper;
 import com.ktr.ktrsupportlibrary.adapter.QuickAdapter;
+import com.ktr.ktrsupportlibrary.ui.BaseFragment;
 import com.ktr.ktrsupportlibrary.utils.ViewFinder;
 import com.ktr.newsapp.R;
-import com.ktr.newsapp.ui.abstractui.AbstractFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.List;
  * Created by kisstherain on 2015/7/12.
  * 左侧菜单
  */
-public class DrawerLeftMenuFragment extends AbstractFragment {
+public class DrawerLeftMenuFragment extends BaseFragment {
 
     ViewFinder viewFinder;
     ListView drawer_listView;

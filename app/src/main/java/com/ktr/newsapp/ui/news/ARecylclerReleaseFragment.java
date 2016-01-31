@@ -8,17 +8,15 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapOwner;
 import com.ktr.ktrsupportlibrary.inject.ViewInject;
+import com.ktr.ktrsupportlibrary.ui.BaseFragment;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.ui.MainActivity;
-import com.ktr.newsapp.ui.abstractui.AbstractFragment;
 import com.ktr.newsapp.weight.KRecyclerAdapter;
 import com.ktr.newsapp.weight.KRecyclerView;
 
@@ -30,7 +28,7 @@ import java.util.Set;
 /**
  * Created by n911305 on 2016/1/15.
  */
-public abstract class ARecylclerReleaseFragment extends AbstractFragment implements BitmapOwner, RecyclerView.RecyclerListener {
+public abstract class ARecylclerReleaseFragment extends BaseFragment implements BitmapOwner, RecyclerView.RecyclerListener {
 
     public static final String TAG = ARecylclerReleaseFragment.class.getSimpleName();
 

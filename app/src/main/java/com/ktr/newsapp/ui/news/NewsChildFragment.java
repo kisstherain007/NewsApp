@@ -4,19 +4,18 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.ktr.ktrsupportlibrary.utils.Utility;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.api.ApiManager;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
 import com.ktr.newsapp.bean.newsBean.NewsDetailBean;
-import com.ktr.newsapp.ui.newsDetail.NewsDetailActivity;
+import com.ktr.newsapp.ui.newsDetail.NewsNativeDetailActivity;
 import com.ktr.newsapp.weight.DividerItemDecoration;
 import com.ktr.newsapp.weight.KRecyclerAdapter;
-import com.ktr.newsapp.weight.KRecyclerView;
+
+import java.util.List;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,12 +61,17 @@ public class NewsChildFragment extends ARecylclerReleaseFragment implements Abst
             @Override
             public void onItemClick(View view, Object t) {
 
-                NewsDetailActivity.startActivity(getActivity(), ((ContentlistBean) t).getLink());
+//                NewsWebDetailActivity.startActivity(getActivity(), ((ContentlistBean) t).getLink());
+                NewsNativeDetailActivity.launch(getActivity());
             }
         });
     }
 
+    List<ContentlistBean> contentlistBeans;
+
     public void executeSearchByChannelId(String channelId) {
+
+        if (contentlistBeans != null) return;
 
         ApiManager.getDataByChannelId(channelId, 1).enqueue(new Callback<NewsDetailBean>() {
             @Override
@@ -75,7 +79,9 @@ public class NewsChildFragment extends ARecylclerReleaseFragment implements Abst
 
                 if (response.isSuccess()) {
 
-                    kRecyclerAdapter.refreshAdapter(response.body().getShowapi_res_body().getPagebean().getContentlist());
+                    contentlistBeans = response.body().getShowapi_res_body().getPagebean().getContentlist();
+
+                    kRecyclerAdapter.refreshAdapter(contentlistBeans);
                 }
             }
 

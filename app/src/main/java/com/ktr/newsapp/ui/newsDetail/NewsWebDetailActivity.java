@@ -6,18 +6,18 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.ktr.ktrsupportlibrary.ui.BaseActivity;
 import com.ktr.newsapp.R;
-import com.ktr.newsapp.ui.abstractui.AbstractActivity;
 
 /**
  * Created by kisstherain on 2016/1/11.
  */
-public class NewsDetailActivity extends AbstractActivity {
+public class NewsWebDetailActivity extends BaseActivity {
 
     WebView webView;
 
     public static void startActivity(Context context, String linkUrl) {
-        Intent intent = new Intent(context, NewsDetailActivity.class);
+        Intent intent = new Intent(context, NewsWebDetailActivity.class);
         intent.putExtra("linkUrl", linkUrl);
         context.startActivity(intent);
     }

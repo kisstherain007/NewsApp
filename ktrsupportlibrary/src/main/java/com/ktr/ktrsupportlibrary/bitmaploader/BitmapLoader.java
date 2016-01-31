@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.bitmaploader.downloader.BitmapCache;
 import com.ktr.ktrsupportlibrary.bitmaploader.downloader.ImageDownloader;
+import com.ktr.ktrsupportlibrary.utils.BitmapTask;
 import com.ktr.ktrsupportlibrary.utils.Utility;
 
 import java.lang.ref.WeakReference;
@@ -162,7 +163,7 @@ public class BitmapLoader {
             return imageLoaderTask;
     }
 
-    public class ImageLoaderTask extends AsyncTask<Void, Void, CommonBitmap>{
+    public class ImageLoaderTask extends BitmapTask<Void, Void, CommonBitmap> {
 
         private List<WeakReference<ImageView>> imageViewsRef;
         String imageUrl;
@@ -177,7 +178,7 @@ public class BitmapLoader {
         }
 
         @Override
-        protected CommonBitmap doInBackground(Void... params) {
+        public CommonBitmap workInBackground(Void... params) throws Exception {
 
             // 本地缓存读取
 
@@ -203,23 +204,26 @@ public class BitmapLoader {
         }
 
         @Override
-        protected void onPostExecute(CommonBitmap bitmap) {
-            super.onPostExecute(bitmap);
+        protected void onTaskSuccess(CommonBitmap bitmap) {
+            super.onTaskSuccess(bitmap);
 
-            isCompleted = true;
-            taskCache.remove(imageUrl);
-
-            if (bitmap != null){
-
-                setImageBitmap(bitmap);
-            }
+            setImageBitmap(bitmap);
         }
 
         @Override
-        protected void onCancelled() {
-            super.onCancelled();
+        protected void onTaskFailed(Exception exception) {
+            super.onTaskFailed(exception);
+
+//            if (config.getLoadfaildRes() > 0)
+//                setImageBitmap(new MyBitmap(config.getLoadfaildRes()));
+        }
+
+        @Override
+        protected void onTaskComplete() {
+            super.onTaskComplete();
 
             isCompleted = true;
+
             taskCache.remove(imageUrl);
         }
 

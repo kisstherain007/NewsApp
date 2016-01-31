@@ -3,41 +3,19 @@ package com.ktr.newsapp.ui.news;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.ktr.ktrsupportlibrary.autoScrollViewPager.AutoScrollViewPager;
-import com.ktr.ktrsupportlibrary.pagerAdapter.ImagePagerAdapter;
 import com.ktr.ktrsupportlibrary.slidingTab.SlidingTabLayout;
-import com.ktr.ktrsupportlibrary.utils.Utility;
-import com.ktr.newsapp.AppSetting;
+import com.ktr.ktrsupportlibrary.ui.BaseFragment;
 import com.ktr.newsapp.R;
-import com.ktr.newsapp.api.ApiManager;
-import com.ktr.newsapp.bean.newsBean.ContentlistBean;
-import com.ktr.newsapp.bean.newsBean.NewsDetailBean;
-import com.ktr.newsapp.bean.newsBean.NewsDetialPagebean;
-import com.ktr.newsapp.ui.abstractui.AbstractFragment;
-import com.ktr.newsapp.ui.newsDetail.NewsDetailActivity;
-import com.ktr.newsapp.weight.DividerItemDecoration;
-import com.ktr.newsapp.weight.KRecyclerAdapter;
-import com.ktr.newsapp.weight.KRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by kisstherain on 2016/1/10.
  */
-public abstract class AbstractStripTabsFragment extends AbstractFragment implements ViewPager.OnPageChangeListener{
+public abstract class AbstractStripTabsFragment extends BaseFragment implements ViewPager.OnPageChangeListener{
 
     String[] titleArr;
     List<Fragment> childFragments;
