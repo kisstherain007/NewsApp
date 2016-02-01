@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ktr.newsapp.ui.newsListweight.ARecylclerReleaseListViewFragment;
+
 /**
  * Implementation of {@link android.support.v4.view.PagerAdapter} that
  * represents each page as a {@link Fragment} that is persistently
@@ -114,6 +116,9 @@ public abstract class CanRefreshFPagerAdapter extends PagerAdapter {
     protected void freshUI(Fragment fragment) {
         if (fragment instanceof ARecylclerReleaseFragment)
             ((ARecylclerReleaseFragment) fragment).refreshUI();
+
+        if (fragment instanceof ARecylclerReleaseListViewFragment)
+            ((ARecylclerReleaseListViewFragment) fragment).refreshUI();
     }
 
     @Override
@@ -126,6 +131,9 @@ public abstract class CanRefreshFPagerAdapter extends PagerAdapter {
 //        mCurTransaction.detach((Fragment)object);
         if (object instanceof ARecylclerReleaseFragment)
             ((ARecylclerReleaseFragment) object).releaseImageViewByIds();
+
+        if (object instanceof ARecylclerReleaseListViewFragment)
+            ((ARecylclerReleaseListViewFragment) object).releaseImageViewByIds();
     }
 
     @Override

@@ -9,8 +9,8 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="@dimen/view_pager_height" />-->
 
-    <com.ktr.newsapp.weight.KRecyclerView
-        android:id="@+id/recyclerView"
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

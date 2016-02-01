@@ -7,6 +7,7 @@ import android.view.View;
 import com.ktr.newsapp.api.ApiManager;
 import com.ktr.newsapp.bean.newsBean.ChannelList;
 import com.ktr.newsapp.bean.newsBean.NewsChannelBean;
+import com.ktr.newsapp.ui.newsListweight.NewsChildListViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,8 @@ import retrofit2.Response;
 public class NewsFragment extends AutoReleaseFragment {
 
     String[] titleArr;
-    List<Fragment> childFragments = new ArrayList<>();
-
+//    List<Fragment> childFragments = new ArrayList<>();
+    List<ChannelList> mChannelLists;
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
         return fragment;
@@ -42,16 +43,16 @@ public class NewsFragment extends AutoReleaseFragment {
                 List<ChannelList> channelLists = response.body().getShowapi_res_body().getChannelList();
                 titleArr = new String[channelLists.size()];
 
+                mChannelLists = channelLists;
+
                 int i = 0;
 
-                for (ChannelList channelList : channelLists){
+                for (ChannelList channelList : channelLists) {
 
                     titleArr[i++] = channelList.getName();
-                    childFragments.add(NewsChildFragment.newInstance(channelList.getChannelId()));
                 }
 
-
-                setTabsData(titleArr, childFragments);
+                setTabsData(titleArr, titleArr.length);
             }
 
             @Override
@@ -60,4 +61,15 @@ public class NewsFragment extends AutoReleaseFragment {
             }
         });
     }
+
+    @Override
+    protected Fragment newFragment(int position) {
+
+        return NewsChildListViewFragment.newInstance(mChannelLists.get(position).getChannelId());
+    }
+
+//    @Override
+//    protected int generateTabs() {
+//        return 0;
+//    }
 }

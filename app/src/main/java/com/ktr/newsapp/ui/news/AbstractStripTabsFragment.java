@@ -10,7 +10,8 @@ import com.ktr.ktrsupportlibrary.slidingTab.SlidingTabLayout;
 import com.ktr.ktrsupportlibrary.ui.BaseFragment;
 import com.ktr.newsapp.R;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by kisstherain on 2016/1/10.
@@ -18,7 +19,8 @@ import java.util.List;
 public abstract class AbstractStripTabsFragment extends BaseFragment implements ViewPager.OnPageChangeListener{
 
     String[] titleArr;
-    List<Fragment> childFragments;
+//    List<Fragment> childFragments;
+    Map<Integer, Fragment> fragments;
 
     SlidingTabLayout slidingTabs;
     ViewPager contentViewPager;
@@ -26,6 +28,9 @@ public abstract class AbstractStripTabsFragment extends BaseFragment implements 
 
     Fragment mCurrentFragment;
     int mCurrentPosition = 0;
+    int tabsCount = 0;
+
+    abstract protected Fragment newFragment(int position);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +52,13 @@ public abstract class AbstractStripTabsFragment extends BaseFragment implements 
         contentViewPager = (ViewPager) view.findViewById(R.id.pager);
     }
 
-    public void setTabsData(String[] titleArr, List<Fragment> childFragments){
+    public void setTabsData(String[] titleArr, int tabsCount/*, List<Fragment> childFragments*/){
+
+        this.tabsCount = tabsCount;
+
+        fragments = new HashMap<Integer, Fragment>();
 
         this.titleArr = titleArr;
-        this.childFragments = childFragments;
 
         mViewPagerAdapter = new MyViewPagerAdapter(getFragmentManager());
         contentViewPager.setOffscreenPageLimit(0);
@@ -74,16 +82,19 @@ public abstract class AbstractStripTabsFragment extends BaseFragment implements 
         @Override
         public Fragment getItem(int position) {
 
-            Fragment fragment = childFragments.get(position);
+            Fragment fragment = fragments.get(position);
+            if (fragment == null) {
+                fragment = newFragment(position);
 
-            mCurrentFragment = fragment;
+                fragments.put(position, fragment);
+            }
 
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return childFragments.size();
+            return tabsCount;
         }
 
         @Override
@@ -103,7 +114,7 @@ public abstract class AbstractStripTabsFragment extends BaseFragment implements 
 
             return null;
         }
-        return childFragments.get(mCurrentPosition);
+        return fragments.get(mCurrentPosition);
     }
 
     @Override

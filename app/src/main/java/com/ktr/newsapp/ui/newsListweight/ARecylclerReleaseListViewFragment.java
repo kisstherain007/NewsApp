@@ -1,4 +1,4 @@
-package com.ktr.newsapp.ui.news;
+package com.ktr.newsapp.ui.newsListweight;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -6,49 +6,72 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.ListView;
 
+import com.ktr.ktrsupportlibrary.adapter.BaseAdapterHelper;
+import com.ktr.ktrsupportlibrary.adapter.QuickAdapter;
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
-import com.ktr.ktrsupportlibrary.bitmaploader.BitmapOwner;
+import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.inject.ViewInject;
 import com.ktr.ktrsupportlibrary.ui.BaseFragment;
 import com.ktr.newsapp.R;
+import com.ktr.newsapp.bean.newsBean.ContentlistBean;
 import com.ktr.newsapp.ui.MainActivity;
+import com.ktr.newsapp.ui.news.AbstractStripTabsFragment;
 import com.ktr.newsapp.weight.DisplayPicsView;
-import com.ktr.newsapp.weight.KRecyclerAdapter;
-import com.ktr.newsapp.weight.KRecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Created by n911305 on 2016/1/15.
  */
-public abstract class ARecylclerReleaseFragment extends BaseFragment implements RecyclerView.RecyclerListener {
+public abstract class ARecylclerReleaseListViewFragment extends BaseFragment implements AbsListView.RecyclerListener {
 
-    public static final String TAG = ARecylclerReleaseFragment.class.getSimpleName();
+    public static final String TAG = ARecylclerReleaseListViewFragment.class.getSimpleName();
 
-    @ViewInject(idStr = "recyclerView")
-    KRecyclerView recyclerView;
-    KRecyclerAdapter kRecyclerAdapter;
+    @ViewInject(idStr = "listView")
+    ListView recyclerView;
+    List<ContentlistBean> datas;
+    QuickAdapter quickAdapter;
 
     @Override
     protected int inflateContentView() {
-        return R.layout.news_child_fragment;
+        return R.layout.news_child_listview_fragment;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
 
-        kRecyclerAdapter = new KRecyclerAdapter(this.getActivity(), this);
-        recyclerView.setRecyclerListener(this);
-        recyclerView.setAdapter(kRecyclerAdapter);
+    void initData(List<ContentlistBean> datas){
+
+        recyclerView.setAdapter(quickAdapter = new QuickAdapter<ContentlistBean>(getActivity(), R.layout.news_item_layout, datas) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, ContentlistBean item) {
+
+                helper.setText(R.id.title_textView, item.getTitle());
+                helper.setText(R.id.content_textView, item.getDesc());
+                DisplayPicsView displayPicsView = (DisplayPicsView) helper.getView().findViewById(R.id.display_view);
+                if (!item.getImageurls().isEmpty()){
+                    displayPicsView.setVisibility(View.VISIBLE);
+                    ImageConfig imageConfig = new ImageConfig();
+                    imageConfig.setLoadingRes(R.mipmap.ic_launcher);
+                    displayPicsView.setPics(ARecylclerReleaseListViewFragment.this, item.getImageurls());
+                }else{
+
+                    displayPicsView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     /**
@@ -89,7 +112,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
                 releaseImageView(view);
 
                 if (viewCache.containsKey(view.toString())) {
-                    Log.v(TAG, "已经释放了，从Cache中移除");
+                    Log.d(TAG, "已经释放了，从Cache中移除");
                     viewCache.remove(view.toString());
                 }
             }
@@ -99,7 +122,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
                 for (String key : keySet) {
                     View view = viewCache.get(key).get();
                     if (view != null) {
-                        Log.v(TAG, "从Cache中释放一个View");
+                        Log.d(TAG, "从Cache中释放一个View");
 
                         releaseImageView(view);
                     }
@@ -115,7 +138,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
 
             @Override
             public void run() {
-                kRecyclerAdapter.notifyDataSetChanged();
+//                kRecyclerAdapter.notifyDataSetChanged();
             }
 
         }, 200);
@@ -134,7 +157,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
                 ImageView imgView = (ImageView) container.findViewById(imgId);
                 if (imgView != null) {
                     imgView.setImageDrawable(new ColorDrawable(Color.parseColor("#fff2f2f2")));
-                    Log.d(ARecylclerReleaseFragment.class.getSimpleName(), "释放ImageView");
+                    Log.d(ARecylclerReleaseListViewFragment.class.getSimpleName(), "释放ImageView");
                 }
             }
         }
@@ -150,11 +173,11 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
     };
 
     @Override
-    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+    public void onMovedToScrapHeap(View view) {
 
-        if (!viewCache.containsKey(holder.itemView.toString())) {
-            Log.d(TAG, holder.itemView.toString() + "保存一个View到Cache");
-            viewCache.put(holder.itemView.toString(), new WeakReference<View>(holder.itemView));
+        if (!viewCache.containsKey(view.toString())) {
+            Log.d(TAG, view.toString() + "保存一个View到Cache");
+            viewCache.put(view.toString(), new WeakReference<View>(view));
         }
     }
 
@@ -196,7 +219,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
         return null;
     }
 
-    abstract RecyclerView getReleaseView();
+    abstract ListView getReleaseView();
 
     Handler mHandler = new Handler() {
 

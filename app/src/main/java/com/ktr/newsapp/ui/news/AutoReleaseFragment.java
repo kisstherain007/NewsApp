@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
+import com.ktr.newsapp.ui.newsListweight.ARecylclerReleaseListViewFragment;
 
 /**
  * Created by n911305 on 2016/1/15.
@@ -52,13 +53,18 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
 
     public void releaseFragment(int position){
 
-        if (position < childFragments.size() && position >= 0) {
+        if (position < fragments.size() && position >= 0) {
 
-            Fragment fragment = childFragments.get(position);
+            Fragment fragment = fragments.get(position);
 
             if (fragment != null && fragment instanceof ARecylclerReleaseFragment){
 
                 ((ARecylclerReleaseFragment) fragment).releaseImageViewByIds();
+            }
+
+            if (fragment != null && fragment instanceof ARecylclerReleaseListViewFragment){
+
+                ((ARecylclerReleaseListViewFragment) fragment).releaseImageViewByIds();
             }
         }
     }
