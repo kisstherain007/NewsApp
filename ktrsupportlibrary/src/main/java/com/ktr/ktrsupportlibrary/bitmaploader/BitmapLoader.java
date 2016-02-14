@@ -140,12 +140,21 @@ public class BitmapLoader {
 
             if (!checkTaskExistAndRunning(url, imageView)) {
 
-                ImageLoaderTask newTask = display(imageView, url, imageConfig);
+                boolean canLoad = owner == null || owner.canDisplay() ? true : false;
 
-                // 添加到fragment当中，当fragment在Destory的时候，清除task列表
-                if (owner != null) getTaskCache(owner).add(new WeakReference<ImageLoaderTask>(newTask));
+                if (!canLoad) {
+                    Logger.d(TAG, "视图在滚动，显示默认图片");
 
-                newTask = null; /***********有待验证作用.........***********/
+//                    setImageLoading(imageView, null, imageConfig);
+                }else{
+
+                    ImageLoaderTask newTask = display(imageView, url, imageConfig);
+
+                    // 添加到fragment当中，当fragment在Destory的时候，清除task列表
+                    if (owner != null) getTaskCache(owner).add(new WeakReference<ImageLoaderTask>(newTask));
+
+                    newTask = null; /***********有待验证作用.........***********/
+                }
             }
         }
     }
@@ -293,28 +302,28 @@ public class BitmapLoader {
             taskCache.remove(url);
         }
 
-//        // 还没有线程，判断ImageView是否已经绑定了线程，如果绑定了，就将已存在的线程cancel(false)掉
-//        ImageLoaderTask task = getWorkingTask(imageView);
-//        if (task != null && !task.imageUrl.equals(url) && task.imageViewsRef.size() == 1) {
-//            Log.d(TAG, String.format("停止一个图片加载，如果还没有运行 url = %s", url));
-//            task.cancel(false);
-//        }
+        // 还没有线程，判断ImageView是否已经绑定了线程，如果绑定了，就将已存在的线程cancel(false)掉
+        ImageLoaderTask task = getWorkingTask(imageView);
+        if (task != null && !task.imageUrl.equals(url) && task.imageViewsRef.size() == 1) {
+            Log.d(TAG, String.format("停止一个图片加载，如果还没有运行 url = %s", url));
+            task.cancel(false);
+        }
 
         return false;
     }
 
-//    private ImageLoaderTask getWorkingTask(ImageView imageView) {
-//        if (imageView == null)
-//            return null;
-//
-//        Drawable drawable = imageView.getDrawable();
-//        if (drawable != null && drawable instanceof CommonDrawable) {
-//            WeakReference<ImageLoaderTask> loader = ((CommonDrawable) drawable).getTask();
-//            if (loader != null && loader.get() != null)
-//                return loader.get();
-//        }
-//        return null;
-//    }
+    private ImageLoaderTask getWorkingTask(ImageView imageView) {
+        if (imageView == null)
+            return null;
+
+        Drawable drawable = imageView.getDrawable();
+        if (drawable != null && drawable instanceof CommonDrawable) {
+            WeakReference<ImageLoaderTask> loader = ((CommonDrawable) drawable).getTask();
+            if (loader != null && loader.get() != null)
+                return loader.get();
+        }
+        return null;
+    }
 
     public boolean bitmapHasBeenSet(ImageView imageView, String url) {
 

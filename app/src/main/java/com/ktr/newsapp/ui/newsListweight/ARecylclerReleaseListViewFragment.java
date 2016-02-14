@@ -18,6 +18,7 @@ import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.inject.ViewInject;
 import com.ktr.ktrsupportlibrary.ui.BaseFragment;
+import com.ktr.ktrsupportlibrary.utils.Logger;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
 import com.ktr.newsapp.ui.MainActivity;
@@ -33,7 +34,7 @@ import java.util.Set;
 /**
  * Created by n911305 on 2016/1/15.
  */
-public abstract class ARecylclerReleaseListViewFragment extends BaseFragment implements AbsListView.RecyclerListener {
+public abstract class ARecylclerReleaseListViewFragment extends BaseFragment implements AbsListView.RecyclerListener, AbsListView.OnScrollListener {
 
     public static final String TAG = ARecylclerReleaseListViewFragment.class.getSimpleName();
 
@@ -60,7 +61,8 @@ public abstract class ARecylclerReleaseListViewFragment extends BaseFragment imp
 
                 helper.setText(R.id.title_textView, item.getTitle());
                 helper.setText(R.id.content_textView, item.getDesc());
-                DisplayPicsView displayPicsView = (DisplayPicsView) helper.getView().findViewById(R.id.display_view);
+
+                DisplayPicsView displayPicsView = helper.retrieveView(R.id.display_view);
                 if (!item.getImageurls().isEmpty()){
                     displayPicsView.setVisibility(View.VISIBLE);
                     ImageConfig imageConfig = new ImageConfig();
@@ -72,6 +74,8 @@ public abstract class ARecylclerReleaseListViewFragment extends BaseFragment imp
                 }
             }
         });
+
+        recyclerView.setOnScrollListener(this);
     }
 
     /**
@@ -145,7 +149,7 @@ public abstract class ARecylclerReleaseListViewFragment extends BaseFragment imp
     }
 
     protected boolean releaseImageView(View container) {
-
+        Log.d(TAG, "releaseImageView");
         DisplayPicsView displayPicsView = (DisplayPicsView) container.findViewById(R.id.display_view);
         if (displayPicsView != null){
             Log.d(TAG, "displayPicsView.release();");
@@ -168,6 +172,7 @@ public abstract class ARecylclerReleaseListViewFragment extends BaseFragment imp
     Runnable releaseRunnable = new Runnable() {
         @Override
         public void run() {
+            Log.d(TAG, "on release....");
             releaseImageViewByIds();
         }
     };
@@ -213,6 +218,42 @@ public abstract class ARecylclerReleaseListViewFragment extends BaseFragment imp
     public void onDetach() {
         super.onDetach();
         Log.d(TAG, "onDetach.......");
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+    boolean isScrolling = false;
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        if (scrollState == SCROLL_STATE_FLING) {
+            isScrolling = true;
+        }
+        else if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+            isScrolling = true;
+        }
+        else if (scrollState == SCROLL_STATE_IDLE) {
+            isScrolling = false;
+
+            mHandler.postDelayed(refreshRunnable, 200);
+        }
+    }
+
+    Runnable refreshRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            quickAdapter.notifyDataSetChanged();
+        }
+    };
+
+    @Override
+    public boolean canDisplay() {
+        return !isScrolling;
     }
 
     protected int[] configCanReleaseIds() {

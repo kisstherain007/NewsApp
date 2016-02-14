@@ -2,6 +2,7 @@ package com.ktr.newsapp.ui.news;
 
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.newsapp.ui.newsListweight.ARecylclerReleaseListViewFragment;
@@ -16,7 +17,7 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
     @Override
     public void onPageSelected(int position) {
         super.onPageSelected(position);
-
+        Log.d("AutoReleaseFragment", "onPageSelected");
         mCurrentPosition = position;
 
         mHandler.removeCallbacks(releaseRunnable);
@@ -53,6 +54,8 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
 
     public void releaseFragment(int position){
 
+        Log.d("ktr test" ,"releaseFragment ");
+
         if (position < fragments.size() && position >= 0) {
 
             Fragment fragment = fragments.get(position);
@@ -64,6 +67,7 @@ public abstract class AutoReleaseFragment extends AbstractStripTabsFragment {
 
             if (fragment != null && fragment instanceof ARecylclerReleaseListViewFragment){
 
+                Log.d("ktr test" ,"release....");
                 ((ARecylclerReleaseListViewFragment) fragment).releaseImageViewByIds();
             }
         }

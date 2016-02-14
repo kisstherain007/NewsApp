@@ -2,8 +2,10 @@ package com.ktr.newsapp.ui.news;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
+import com.ktr.ktrsupportlibrary.utils.Logger;
 import com.ktr.newsapp.api.ApiManager;
 import com.ktr.newsapp.bean.newsBean.ChannelList;
 import com.ktr.newsapp.bean.newsBean.NewsChannelBean;

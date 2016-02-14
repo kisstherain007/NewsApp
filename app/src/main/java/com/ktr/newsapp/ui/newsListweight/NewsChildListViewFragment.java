@@ -3,6 +3,7 @@ package com.ktr.newsapp.ui.newsListweight;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.ktr.ktrsupportlibrary.utils.Utility;
@@ -107,4 +108,5 @@ public class NewsChildListViewFragment extends ARecylclerReleaseListViewFragment
 
        executeRequestData();
     }
+
 }
