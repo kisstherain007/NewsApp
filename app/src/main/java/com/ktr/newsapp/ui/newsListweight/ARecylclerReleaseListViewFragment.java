@@ -8,8 +8,10 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.ktr.ktrsupportlibrary.adapter.BaseAdapterHelper;
@@ -18,7 +20,6 @@ import com.ktr.ktrsupportlibrary.bitmaploader.BitmapLoader;
 import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.inject.ViewInject;
 import com.ktr.ktrsupportlibrary.ui.BaseFragment;
-import com.ktr.ktrsupportlibrary.utils.Logger;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.bean.newsBean.ContentlistBean;
 import com.ktr.newsapp.ui.MainActivity;
@@ -58,6 +59,12 @@ public abstract class ARecylclerReleaseListViewFragment extends BaseFragment imp
         recyclerView.setAdapter(quickAdapter = new QuickAdapter<ContentlistBean>(getActivity(), R.layout.news_item_layout, datas) {
             @Override
             protected void convert(BaseAdapterHelper helper, ContentlistBean item) {
+
+                LinearLayout linearLayout = helper.retrieveView(R.id.item_layout);
+
+                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+                lp.setMargins(50, 50, 50, 50);
+                linearLayout.setLayoutParams(lp);
 
                 helper.setText(R.id.title_textView, item.getTitle());
                 helper.setText(R.id.content_textView, item.getDesc());

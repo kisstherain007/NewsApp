@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ktr.ktrsupportlibrary.slidingTab.SlidingTabLayout;
@@ -75,6 +76,8 @@ public abstract class AbstractStripTabsFragment extends BaseFragment implements 
 
     class MyViewPagerAdapter extends CanRefreshFPagerAdapter {
 
+        RecyclerView.RecycledViewPool mPool = new RecyclerView.RecycledViewPool();
+
         public MyViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -85,7 +88,9 @@ public abstract class AbstractStripTabsFragment extends BaseFragment implements 
             Fragment fragment = fragments.get(position);
             if (fragment == null) {
                 fragment = newFragment(position);
-
+                if (fragment instanceof ARecylclerReleaseFragment){
+                    ((ARecylclerReleaseFragment) fragment).recycledViewPool = mPool;
+                }
                 fragments.put(position, fragment);
             }
 

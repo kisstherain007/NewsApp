@@ -67,7 +67,7 @@ public class NewsFragment extends AutoReleaseFragment {
     @Override
     protected Fragment newFragment(int position) {
 
-        return NewsChildListViewFragment.newInstance(mChannelLists.get(position).getChannelId());
+        return NewsChildFragment.newInstance(mChannelLists.get(position).getChannelId());
     }
 
 //    @Override

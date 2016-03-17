@@ -36,6 +36,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
     @ViewInject(idStr = "recyclerView")
     KRecyclerView recyclerView;
     KRecyclerAdapter kRecyclerAdapter;
+    RecyclerView.RecycledViewPool recycledViewPool;
 
     @Override
     protected int inflateContentView() {
@@ -47,8 +48,56 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
         super.onViewCreated(view, savedInstanceState);
 
         kRecyclerAdapter = new KRecyclerAdapter(this.getActivity(), this);
+
+        if (recycledViewPool != null){
+
+            recyclerView.setRecycledViewPool(recycledViewPool);
+        }
+
         recyclerView.setRecyclerListener(this);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                switch (newState){
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        isScorlling = false;
+                        mHandler.postDelayed(refreshRunnable, 200);
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        isScorlling = true;
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        isScorlling = true;
+                        break;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         recyclerView.setAdapter(kRecyclerAdapter);
+
+        recyclerView.setItemViewCacheSize(0);
+    }
+
+    Runnable refreshRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            kRecyclerAdapter.notifyDataSetChanged();
+        }
+    };
+
+    boolean isScorlling = false;
+
+    @Override
+    public boolean canDisplay() {
+
+        return !isScorlling;
     }
 
     /**
