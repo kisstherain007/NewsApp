@@ -154,7 +154,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
                     }
                 }
 
-//                viewCache.clear();
+                viewCache.clear();
             }
         }
     }
@@ -210,6 +210,7 @@ public abstract class ARecylclerReleaseFragment extends BaseFragment implements 
     @Override
     public void onPause() {
         super.onPause();
+        Log.v(TAG, "onPause");
         mHandler.postDelayed(releaseRunnable, 5 * 1000);
     }
 

@@ -64,6 +64,8 @@ public class DisplayPicsView extends ViewGroup {
 
     private void init(){
 
+        if (isInEditMode()) { return; }
+
         screenWidth = ScreenUtil.getScreenWidth();
         screenHeight = ScreenUtil.getScreenHeight();
         gap = getResources().getDimensionPixelSize(R.dimen.gap_pics);
@@ -271,6 +273,8 @@ public class DisplayPicsView extends ViewGroup {
             }else{
                 imgView.setVisibility(View.VISIBLE);
                 ImageConfig imageConfig = new ImageConfig();
+                imageConfig.setMaxWidth(picRects[i].width());
+                imageConfig.setMaxHeight(picRects[i].height());
                 imageConfig.setLoadingRes(com.ktr.newsapp.R.mipmap.ic_launcher);
                 BitmapLoader.getInstance().display(mUownerFragment, imgView, mUrlList.get(i).getUrl(), imageConfig);
             }
@@ -301,7 +305,9 @@ public class DisplayPicsView extends ViewGroup {
 
         for (int i = 0; i < getChildCount(); i++) {
             ImageView imgView = (ImageView) getChildAt(i);
-            imgView.setImageDrawable(new ColorDrawable(Color.parseColor("#fff2f2f2")));
+            if (imgView != null){
+                imgView.setImageDrawable(new ColorDrawable(Color.parseColor("#fff2f2f2")));
+            }
         }
     }
 }

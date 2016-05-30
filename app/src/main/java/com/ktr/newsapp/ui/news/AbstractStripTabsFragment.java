@@ -76,10 +76,23 @@ public abstract class AbstractStripTabsFragment extends BaseFragment implements 
 
     class MyViewPagerAdapter extends CanRefreshFPagerAdapter {
 
-        RecyclerView.RecycledViewPool mPool = new RecyclerView.RecycledViewPool();
+        RecyclerView.RecycledViewPool mPool = new RecyclerView.RecycledViewPool(){
+
+            @Override
+            public void putRecycledView(RecyclerView.ViewHolder scrap) {
+                super.putRecycledView(scrap);
+            }
+
+            @Override
+            public RecyclerView.ViewHolder getRecycledView(int viewType) {
+                return super.getRecycledView(viewType);
+            }
+        };
 
         public MyViewPagerAdapter(FragmentManager fm) {
             super(fm);
+
+            mPool.setMaxRecycledViews(0, 60);
         }
 
         @Override

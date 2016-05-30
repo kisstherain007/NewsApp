@@ -33,7 +33,6 @@
                 android:id="@+id/title_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
                 android:text="Large Text"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textsize_xmiddle" />
@@ -42,7 +41,6 @@
                 android:id="@+id/content_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
                 android:text="Large Text"
                 android:textColor="@color/gray_light"
                 android:textSize="@dimen/textsize_middle" />

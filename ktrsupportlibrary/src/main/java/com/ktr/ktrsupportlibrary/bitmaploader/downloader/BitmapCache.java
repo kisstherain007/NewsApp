@@ -58,6 +58,7 @@ public class BitmapCache {
     }
 
     public void clearMemCache() {
+
         if (mMemoryCache != null) {
             mMemoryCache.evictAll();
         }

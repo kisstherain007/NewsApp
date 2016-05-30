@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.ktr.ktrsupportlibrary.bitmaploader.config.ImageConfig;
 import com.ktr.ktrsupportlibrary.utils.ScreenUtil;
@@ -56,12 +57,13 @@ public class BitmapProcess {
                 } catch (IOException e) {
                 }
             } else {
-//            bitmap = BitmapDecoder.decodeSampledBitmapFromByte(bitmapBytes, maxWidth, maxHeight);
+//              bitmap = BitmapDecoder.decodeSampledBitmapFromByte(bitmapBytes, maxWidth, maxHeight);
 
                 imageConfig.setMaxWidth(maxWidth);
                 imageConfig.setMaxHeight(maxHeight);
 
-            bitmap = new TimelineThumbBitmapCompress().compress(bitmapBytes, imageConfig, options.outWidth, options.outHeight);
+                bitmap = new TimelineThumbBitmapCompress().compress(bitmapBytes, imageConfig, options.outWidth, options.outHeight);
+                Log.d("bz", "TimelineThumbBitmapCompress");
         }
 
         if (bitmap == null){
@@ -99,8 +101,8 @@ public class BitmapProcess {
 //        if (config.getProgress() != null)
 //            config.getProgress().sendLength(inputStream.available());
 
-        byte[] buffer = new byte[8 * 1024];
-        int readLen = -1;
+            byte[] buffer = new byte[8 * 1024];
+            int readLen = -1;
         int readBytes = 0;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         while ((readLen = inputStream.read(buffer)) != -1) {

@@ -53,8 +53,10 @@ public class NewsChildFragment extends ARecylclerReleaseFragment implements Abst
         super.onViewCreated(view, savedInstanceState);
 
         Log.d(TAG, "onViewCreated");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setRecycleChildrenOnDetach(true); // ADDED 29/5
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(layoutManager);
 //        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         kRecyclerAdapter.setmOnItemClickListener(new KRecyclerAdapter.OnRecyclerViewItemClickListener() {
@@ -81,7 +83,7 @@ public class NewsChildFragment extends ARecylclerReleaseFragment implements Abst
 
                     contentlistBeans = response.body().getShowapi_res_body().getPagebean().getContentlist();
 
-                    kRecyclerAdapter.refreshAdapter(contentlistBeans);
+                    kRecyclerAdapter.addItems(contentlistBeans);
                 }
             }
 

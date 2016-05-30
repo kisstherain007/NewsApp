@@ -163,13 +163,13 @@ public class BitmapLoader {
 
 //            Log.i(TAG, url + "checkTaskExistAndRunning false.....");
 
-            ImageLoaderTask imageLoaderTask = new ImageLoaderTask(imageView, url);
+            ImageLoaderTask imageLoaderTask = new ImageLoaderTask(imageView, url, imageConfig);
             WeakReference<ImageLoaderTask> taskReference = new WeakReference<ImageLoaderTask>(imageLoaderTask);
             taskCache.put(url, taskReference);
 
             setImageLoading(imageView, url, imageConfig);
 
-            imageLoaderTask.execute();
+            imageLoaderTask.executrOnImageExecutor();
 
             return imageLoaderTask;
     }
@@ -179,13 +179,15 @@ public class BitmapLoader {
         private List<WeakReference<ImageView>> imageViewsRef;
         String imageUrl;
         boolean isCompleted = false;
+        ImageConfig mImageConfig;
 
-        ImageLoaderTask(ImageView imageView, String url){
+        ImageLoaderTask(ImageView imageView, String url, ImageConfig imageConfig){
 
             imageViewsRef = new ArrayList<WeakReference<ImageView>>();
             if (imageView != null)
                 imageViewsRef.add(new WeakReference<ImageView>(imageView));
             this.imageUrl = url;
+            this.mImageConfig = imageConfig;
         }
 
         @Override
@@ -197,11 +199,11 @@ public class BitmapLoader {
             try {
 
                 //
-                byte[] bitmapBytes = doDownLoad(imageUrl, new ImageConfig());
+                byte[] bitmapBytes = doDownLoad(imageUrl, mImageConfig);
 
                 if (!isCancelled() && checkImageBinding()){
 
-                    CommonBitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, imageUrl, new ImageConfig());
+                    CommonBitmap bitmap = bitmapProcess.compressBitmap(bitmapBytes, imageUrl, mImageConfig);
 
                     if (bitmap != null){
 

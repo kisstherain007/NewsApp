@@ -1,6 +1,7 @@
 package com.ktr.newsapp.weight;
 
 import android.content.Context;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +34,9 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
 
     LayoutInflater mLayoutInflater;
 
-    List<ContentlistBean> contentlist;
+//    List<ContentlistBean> contentlist;
+
+    private SortedList<ContentlistBean> contentlistBeanSortedList;
 
     ARecylclerReleaseFragment aReleaseFragment;
 
@@ -42,13 +45,70 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
         this.mContext = context;
         this.aReleaseFragment = aReleaseFragment;
         mLayoutInflater = LayoutInflater.from(mContext);
+
+        contentlistBeanSortedList = new SortedList<ContentlistBean>(ContentlistBean.class, new SortedList.Callback<ContentlistBean>() {
+            @Override
+            public int compare(ContentlistBean t0, ContentlistBean t1) {
+
+//                // 实现这个方法来定义Item的显示顺序
+//                int txtComp = t0.getTitle().compareTo(t1.getTitle());
+//                if (txtComp != 0) {
+//                    return txtComp;
+//                }
+//                if (t0.id < t1.id) {
+//                    return -1;
+//                } else if (t0.id > t1.id) {
+//                    return 1;
+//                }
+                return 0;
+            }
+
+            @Override
+            public void onInserted(int position, int count) {
+                notifyItemRangeInserted(position, count);
+            }
+
+            @Override
+            public void onRemoved(int position, int count) {
+                notifyItemRangeRemoved(position, count);
+            }
+
+            @Override
+            public void onMoved(int fromPosition, int toPosition) {
+                notifyItemMoved(fromPosition, toPosition);
+            }
+
+            @Override
+            public void onChanged(int position, int count) {
+                notifyItemRangeChanged(position, count);
+            }
+
+            @Override
+            public boolean areContentsTheSame(ContentlistBean oldItem, ContentlistBean newItem) {
+                return oldItem.getTitle().equals(newItem.getTitle());// 比较两个Item的内容是否一致，如不一致则会调用adapter的notifyItemChanged()
+            }
+
+            @Override
+            public boolean areItemsTheSame(ContentlistBean item1, ContentlistBean item2) {
+                return false;
+            }
+        });
     }
 
-    public void refreshAdapter(List<ContentlistBean> datas){
+    public void addItems(List<ContentlistBean> items){
 
-        this.contentlist = datas;
-        notifyDataSetChanged();
+        contentlistBeanSortedList.beginBatchedUpdates();  // 开始批量更新
+        contentlistBeanSortedList.addAll(items);          // 更新一批数据
+        contentlistBeanSortedList.endBatchedUpdates();    // 结束更新
     }
+
+//    void deleteItems(List<Item> items){
+//        mData.beginBatchedUpdates();  // 开始批量更新
+//        for(Item item : items){       // 删除一批数据
+//            mData.remove(item);
+//        }
+//        mData.endBatchedUpdates();    // 结束更新
+//    }
 
     @Override
     public int getItemViewType(int position) {
@@ -58,20 +118,22 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
     @Override
     public int getItemCount() {
 
-        return contentlist == null ? 0 : contentlist.size();
+        return contentlistBeanSortedList == null ? 0 : contentlistBeanSortedList.size();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
+        Log.d(TAG, "onCreateViewHolder" + i);
+
         View itemView = null;
         RecyclerView.ViewHolder viewHolder = null;
 
         switch (i){
-            case titleType:
-                itemView = mLayoutInflater.inflate(R.layout.news_remmond_title_item, viewGroup, false);
-                viewHolder = new RemmondTitleKViewHolder(itemView);
-                break;
+//            case titleType:
+//                itemView = mLayoutInflater.inflate(R.layout.news_remmond_title_item, viewGroup, false);
+//                viewHolder = new RemmondTitleKViewHolder(itemView);
+//                break;
             default:
                 itemView = mLayoutInflater.inflate(R.layout.news_item_layout, viewGroup, false);
                 viewHolder = new KViewHolder(itemView);
@@ -85,13 +147,15 @@ public class KRecyclerAdapter extends RecyclerView.Adapter implements View.OnCli
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
 
+        Log.d(TAG, "onBindViewHolder" + i);
+
         switch (i){
-            case titleType:
-                RemmondTitleKViewHolder remmondTitleKViewHolder = (RemmondTitleKViewHolder) holder;
-                initRecomnd(remmondTitleKViewHolder.autoScrollViewPager);
-                break;
+//            case titleType:
+//                RemmondTitleKViewHolder remmondTitleKViewHolder = (RemmondTitleKViewHolder) holder;
+//                initRecomnd(remmondTitleKViewHolder.autoScrollViewPager);
+//                break;
             default:
-                ContentlistBean contentlistBean = contentlist.get(i);
+                ContentlistBean contentlistBean = contentlistBeanSortedList.get(i);
                 KViewHolder kViewHolder = (KViewHolder) holder;
                 kViewHolder.itemView.setTag(contentlistBean);
                 kViewHolder.titleTextView.setText(contentlistBean.getTitle());

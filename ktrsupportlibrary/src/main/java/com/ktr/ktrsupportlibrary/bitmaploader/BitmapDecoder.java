@@ -18,6 +18,7 @@ package com.ktr.ktrsupportlibrary.bitmaploader;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.ktr.ktrsupportlibrary.utils.ScreenUtil;
 
@@ -84,6 +85,7 @@ public class BitmapDecoder {
 
 	public static Bitmap decodeSampledBitmapFromByte(byte[] data, int reqWidth,
 			int reqHeight) {
+//		Log.d("bz", String.format("reqWidth:s% , reqHeight:s%", reqWidth, reqHeight));
 		// First decode with inJustDecodeBounds=true to check dimensions
 		final BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;

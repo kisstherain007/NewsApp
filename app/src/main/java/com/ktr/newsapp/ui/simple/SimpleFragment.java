@@ -59,6 +59,8 @@ public class SimpleFragment extends BaseFragment {
         titleViewPager.setAdapter(new ImagePagerAdapter(getActivity(), imageIdList).setInfiniteLoop(true));
         titleViewPager.setInterval(2000);
         titleViewPager.startAutoScroll();
+
+//        myAsyncTask.execute((Object[]) null);
     }
 
     List<Fragment> fragmentList = new ArrayList<>();

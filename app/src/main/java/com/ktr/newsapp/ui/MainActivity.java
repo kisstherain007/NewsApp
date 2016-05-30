@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.ktr.ktrsupportlibrary.ui.BaseActivity;
+import com.ktr.ktrsupportlibrary.utils.ToastUtil;
 import com.ktr.newsapp.R;
 import com.ktr.newsapp.ui.home.fragmentManager.HomeFragmentManager;
 import com.ktr.newsapp.ui.home.menu.DrawerLeftMenuFragment;
