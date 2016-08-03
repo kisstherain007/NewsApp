@@ -1,0 +1,4 @@
+ext{
+    sdkVersion = "android-22"
+    toolVersion = "23.0.3"
+}
